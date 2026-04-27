@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Buffalos — Competitor Intelligence Training Sheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+  :root {
+    --navy: #0d1f3c; --gold: #c9922a; --gold-light: #f5d98b;
+    --cream: #faf8f3; --white: #ffffff; --mid: #e8e4db;
+    --text: #1a1a2e; --muted: #6b7280; --accent: #1b4f8a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--cream); color: var(--text); font-size: 15px; line-height: 1.65; }
+
+  /* COVER */
+  html { background: var(--navy); }
+  html, body { margin: 0; padding: 0; }
+  .cover { background: var(--navy); color: var(--white); min-height: 297mm; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 40px; position: relative; overflow: hidden; page-break-after: always; box-sizing: border-box; }
+  .cover::before { display: none; }
+  .cover-badge { background: var(--gold); color: var(--navy); font-weight: 700; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; padding: 6px 20px; border-radius: 2px; margin-bottom: 40px; position: relative; }
+  .cover h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 900; line-height: 1.1; position: relative; margin-bottom: 16px; }
+  .cover h1 span { color: var(--gold); }
+  .cover-sub { font-size: 1.05rem; color: rgba(255,255,255,0.65); font-weight: 300; max-width: 540px; position: relative; margin-bottom: 16px; }
+  .cover-tagline { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold-light); font-style: italic; position: relative; margin-bottom: 50px; }
+  .cover-rule { width: 60px; height: 3px; background: var(--gold); margin: 0 auto 50px; position: relative; }
+  .cover-meta { position: relative; display: flex; gap: 60px; font-size: 0.85rem; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; }
+  .cover-meta strong { display: block; color: var(--gold-light); font-size: 1rem; letter-spacing: 0; text-transform: none; font-weight: 600; margin-bottom: 2px; }
+
+  /* TOC */
+  .toc { background: var(--navy); color: var(--white); padding: 60px 40px; }
+  .toc-inner { max-width: 960px; margin: 0 auto; }
+  .toc h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid rgba(201,146,42,0.3); }
+  .toc-intro { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 32px; }
+  .toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 40px; }
+  .toc-item { display: flex; align-items: center; gap: 12px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.07); text-decoration: none; color: rgba(255,255,255,0.8); font-size: 0.88rem; transition: color 0.2s; }
+  .toc-item:hover { color: var(--gold); }
+  .toc-num { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 0.82rem; min-width: 26px; }
+
+  /* LAYOUT */
+  .page { max-width: 960px; margin: 0 auto; padding: 50px 40px; }
+  .section-header { background: var(--navy); padding: 44px 40px; }
+  .section-header-inner { max-width: 960px; margin: 0 auto; }
+  .section-number { font-family: 'Playfair Display', serif; font-size: 4.5rem; color: rgba(201,146,42,0.2); line-height: 1; margin-bottom: -18px; }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--white); }
+  .section-header h2 span { color: var(--gold); }
+  .content { background: var(--white); }
+  .content .page { padding-top: 40px; padding-bottom: 40px; }
+  .content-alt { background: var(--cream); }
+
+  h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--navy); margin: 32px 0 10px; padding-bottom: 7px; border-bottom: 2px solid var(--gold); display: inline-block; }
+  h4 { font-size: 0.92rem; font-weight: 700; color: var(--accent); margin: 20px 0 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  p { margin-bottom: 12px; }
+
+  /* INFO BOX */
+  .info-box { background: #eff6ff; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 0.9rem; }
+  .info-box .info-title { font-weight: 700; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 1px; color: var(--accent); margin-bottom: 6px; }
+
+  .warn-box { background: #fffbeb; border-left: 4px solid var(--gold); border-radius: 0 6px 6px 0; padding: 16px 20px; margin: 20px 0; font-size: 0.9rem; }
+  .warn-box .warn-title { font-weight: 700; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 1px; color: var(--gold); margin-bottom: 6px; }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  thead tr { background: var(--navy); color: var(--white); }
+  thead th { padding: 10px 12px; text-align: left; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px; text-transform: uppercase; font-family: 'Source Sans 3', sans-serif; }
+  tbody tr:nth-child(even) { background: #f7f9fc; }
+  tbody tr:hover { background: #eef3fb; }
+  tbody td { padding: 9px 12px; border-bottom: 1px solid var(--mid); vertical-align: top; line-height: 1.5; }
+  tbody td:first-child { font-weight: 700; color: var(--navy); min-width: 160px; font-size: 0.82rem; }
+  tbody td ul { padding-left: 16px; margin: 0; }
+  tbody td ul li { margin-bottom: 3px; }
+
+  /* ADVISOR ANGLE */
+  .angle-row td { background: #fef9ec !important; }
+  .angle-row td:first-child { color: var(--gold) !important; font-style: italic; }
+  .angle-label { font-weight: 700; color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+  .angle-row td ul li { margin-bottom: 5px; color: #1a1a2e; }
+
+  /* MULTI-COL TABLE */
+  .multi-thead th:first-child { min-width: 140px; }
+  .multi-col td { min-width: 180px; }
+
+  /* SECTION DIVIDER */
+  .divider { height: 1px; background: linear-gradient(to right, var(--gold), transparent); margin: 32px 0; }
+
+  /* QUICK REF TABLE */
+  .qr-table thead tr { background: var(--navy); }
+  .qr-table tbody td:first-child { color: var(--navy); font-weight: 700; }
+  .qr-table tbody td:nth-child(2) { color: var(--accent); font-style: italic; }
+  .qr-table tbody td:nth-child(3) { color: #166534; }
+
+  /* FOOTER */
+  footer { background: var(--navy); color: rgba(255,255,255,0.5); text-align: center; padding: 36px; font-size: 0.85rem; }
+  footer strong { color: var(--gold); }
+
+  /* CALLOUT */
+  .callout { border-left: 4px solid var(--gold); background: #fef9ec; padding: 16px 20px; border-radius: 0 6px 6px 0; margin: 20px 0; font-size: 0.93rem; }
+  .callout-title { font-weight: 700; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 1px; margin-bottom: 6px; color: var(--gold); }
+
+  .glossary-term { padding: 12px 0; border-bottom: 1px solid var(--mid); }
+  .glossary-term dt { font-weight: 700; color: var(--navy); font-size: 0.95rem; margin-bottom: 3px; }
+  .glossary-term dd { color: var(--muted); font-size: 0.88rem; margin-left: 0; line-height: 1.6; }
+  ul.list li { margin-bottom: 5px; color: var(--muted); font-size: 0.93rem; }
+
+  /* STICKY NAV */
+  .sticky-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--navy); border-bottom: 2px solid var(--gold); display: flex; align-items: center; padding: 0 20px; height: 48px; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+  .sticky-nav::-webkit-scrollbar { display: none; }
+  .sticky-nav .nav-brand { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 0.85rem; font-weight: 700; white-space: nowrap; margin-right: 12px; padding-right: 12px; border-right: 1px solid rgba(201,146,42,0.3); }
+  .sticky-nav a { color: rgba(255,255,255,0.65); font-size: 0.72rem; text-decoration: none; white-space: nowrap; padding: 4px 8px; border-radius: 3px; transition: all 0.15s; letter-spacing: 0.3px; }
+  .sticky-nav a:hover { background: rgba(201,146,42,0.15); color: var(--gold); }
+  .sticky-nav a.active { background: var(--gold); color: var(--navy); font-weight: 700; }
+  body { padding-top: 48px; }
+  .cover { min-height: calc(100vh - 48px); }
+
+  /* STRONGER ADVISOR ANGLE ROW */
+  .angle-row td { background: linear-gradient(135deg, #fef3c7 0%, #fef9ec 100%) !important; border-left: 4px solid var(--gold); }
+  .angle-row td:first-child { color: var(--gold) !important; font-style: italic; border-left: none; }
+  .angle-label { font-weight: 700; color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 4px; }
+  .angle-row td ul li { margin-bottom: 7px; color: #1a1a2e; padding-bottom: 5px; border-bottom: 1px solid rgba(201,146,42,0.15); }
+  .angle-row td ul li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .angle-row { border-top: 2px solid var(--gold); }
+
+  /* SKY CHEAT SHEET */
+  .cheat-sheet { background: var(--navy); color: var(--white); padding: 40px; }
+  .cheat-sheet-inner { max-width: 960px; margin: 0 auto; }
+  .cheat-sheet h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--gold); margin-bottom: 8px; }
+  .cheat-sheet .sub { color: rgba(255,255,255,0.55); font-size: 0.85rem; margin-bottom: 28px; }
+  .cheat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .cheat-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(201,146,42,0.25); border-radius: 8px; border-top: 3px solid var(--gold); padding: 20px; }
+  .cheat-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); margin: 0 0 4px 0; padding: 0; border: none; display: block; }
+  .cheat-card .cheat-tag { display: inline-block; background: rgba(201,146,42,0.2); color: var(--gold-light); font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; margin-bottom: 12px; }
+  .cheat-card ul { padding-left: 16px; margin: 0; }
+  .cheat-card ul li { color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-bottom: 5px; }
+  .cheat-card ul li strong { color: var(--gold-light); }
+  .cheat-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.78rem; }
+  .cheat-table th { background: rgba(201,146,42,0.2); color: var(--gold); padding: 6px 8px; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(201,146,42,0.3); }
+  .cheat-card .cheat-table td { padding: 5px 8px; color: rgba(255,255,255,0.8); border-bottom: 1px solid rgba(255,255,255,0.06); background: transparent; }
+  .cheat-card .cheat-table tr:nth-child(even) td { background: rgba(255,255,255,0.04); }
+  .cheat-card .cheat-table tr:hover td { background: rgba(201,146,42,0.08); }
+  .cheat-card .cheat-table td:first-child { color: var(--gold-light); font-weight: 600; }
+
+  /* LION LOGO ON COVER */
+  .lion-emblem { font-size: 3rem; margin-bottom: 16px; position: relative; filter: drop-shadow(0 0 20px rgba(201,146,42,0.4)); }
+
+  @media (max-width: 640px) {
+    .toc-grid { grid-template-columns: 1fr; }
+    .cover-meta { flex-direction: column; gap: 20px; }
+    .page { padding: 32px 20px; }
+    .cheat-grid { grid-template-columns: 1fr; }
+    .sticky-nav .nav-brand { display: none; }
+  }
+
+  @media print {
+    .sticky-nav { display: none; }
+    body { padding-top: 0; }
+    .cover { min-height: 100vh; page-break-after: always; }
+    .cheat-sheet { page-break-after: always; }
+    .section-header { page-break-before: always; }
+    table { break-inside: auto; }
+    tr { break-inside: avoid; }
+    .angle-row { break-inside: avoid; page-break-inside: avoid; }
+    .toc { page-break-after: always; }
+    @page { margin: 1.5cm; size: A4; }
+    .sticky-nav, .cover::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav" id="topnav">
+  <span class="nav-brand">Team Buffalos</span>
+  <a href="#s1">01 Metro</a>
+  <a href="#s2">02 Old Mutual</a>
+  <a href="#s3">03 1Life</a>
+  <a href="#s4">04 Clientele</a>
+  <a href="#s5">05 AVBOB</a>
+  <a href="#s6">06 Assupol</a>
+  <a href="#s7">07 Liberty</a>
+  <a href="#s8">08 Hollard</a>
+  <a href="#s9">09 Hollard Spec</a>
+  <a href="#s10">10 OM Protect</a>
+  <a href="#s11">11 Discovery</a>
+  <a href="#s12">12 Emerald</a>
+  <a href="#s13">13 FNB</a>
+  <a href="#s14">14 Absa</a>
+  <a href="#s15">15 Capitec</a>
+  <a href="#s16">16 Sanlam Life</a>
+  <a href="#s17">17 King Price</a>
+  <a href="#s18">18 Workerslife</a>
+  <a href="#s19">19 Unlimited</a>
+  <a href="#s20">20 MHA</a>
+  <a href="#qr">Quick Ref</a>
+  <a href="#glossary">Glossary</a>
+</nav>
+<div class="cover">
+  <div class="cover-badge">Team Buffalos · Advisor Training</div>
+  <h1>Competitor <span>Intelligence</span><br>Training Sheet</h1>
+  <p class="cover-sub">A complete product-by-product breakdown of 20 competitors across funeral and life cover</p>
+  <p class="cover-tagline">"Know the enemy. Find the gap. Replace with Sky — if it is in the best interest of the client."</p>
+  <div class="cover-rule"></div>
+  <div class="cover-meta">
+    <div><strong>Audience</strong>Sky Advisors</div>
+    <div><strong>Companies</strong>20 Covered</div>
+    <div><strong>Version</strong>2026 Edition</div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-inner">
+    <h2>Companies Covered</h2>
+    <p class="toc-intro">Twenty companies and product ranges covered across funeral and life cover. Use section headers to navigate.</p>
+    <div class="toc-grid">
+      <a href="#s1" class="toc-item"><span class="toc-num">01</span> Metropolitan (Dignified Funeral + FutureBuilder)</a>
+      <a href="#s2" class="toc-item"><span class="toc-num">02</span> Old Mutual (Funeral Range + Greenlight)</a>
+      <a href="#s3" class="toc-item"><span class="toc-num">03</span> 1Life (Essential Funeral + Pure Life Plus)</a>
+      <a href="#s4" class="toc-item"><span class="toc-num">04</span> Clientele (Funeral Dignity Plan)</a>
+      <a href="#s5" class="toc-item"><span class="toc-num">05</span> AVBOB (Funeral Cover)</a>
+      <a href="#s6" class="toc-item"><span class="toc-num">06</span> Assupol (Funeral + Progress Plans)</a>
+      <a href="#s7" class="toc-item"><span class="toc-num">07</span> Liberty (Funeral Plus + Lifestyle Protector)</a>
+      <a href="#s8" class="toc-item"><span class="toc-num">08</span> Hollard (Funeral + Life Select)</a>
+      <a href="#s9" class="toc-item"><span class="toc-num">09</span> Hollard Specialist Life</a>
+      <a href="#s10" class="toc-item"><span class="toc-num">10</span> Old Mutual Protect</a>
+      <a href="#s11" class="toc-item"><span class="toc-num">11</span> Discovery Life</a>
+      <a href="#s12" class="toc-item"><span class="toc-num">12</span> Emerald Life</a>
+      <a href="#s13" class="toc-item"><span class="toc-num">13</span> FNB Life Insurance</a>
+      <a href="#s14" class="toc-item"><span class="toc-num">14</span> Absa Life Insurance</a>
+      <a href="#s15" class="toc-item"><span class="toc-num">15</span> Capitec Life &amp; Funeral</a>
+      <a href="#s16" class="toc-item"><span class="toc-num">16</span> Sanlam Life (Personal Risk)</a>
+      <a href="#s17" class="toc-item"><span class="toc-num">17</span> King Price Life (formerly Stangen)</a>
+      <a href="#s18" class="toc-item"><span class="toc-num">18</span> Workerslife — POPCRU 25</a>
+      <a href="#s19" class="toc-item"><span class="toc-num">19</span> The Unlimited</a>
+      <a href="#s20" class="toc-item"><span class="toc-num">20</span> MHA / Assupol Xtra Cover (NEHAWU)</a>
+      <a href="#glossary" class="toc-item"><span class="toc-num">GL</span> Glossary — Key Terms Explained</a>
+    </div>
+  </div>
+</div>
+
+<!-- SKY PRODUCTS CHEAT SHEET -->
+<div class="cheat-sheet" id="sky-products">
+  <div class="cheat-sheet-inner">
+    <h2>Sky Products — Quick Reference</h2>
+    <p class="sub">Keep these facts at your fingertips when reading any competitor section. Know your own products cold before you sit down with a client.</p>
+    <div class="cheat-grid">
+
+      <div class="cheat-card">
+        <div class="cheat-tag">Funeral + Life</div>
+        <h3>All-In-One Plan (AIO)</h3>
+        <ul>
+          <li><strong>Funeral cover:</strong> Plans 1–9 · R10 000 to R90 000</li>
+          <li><strong>Life cover:</strong> Up to R500 000 non-underwritten (main member + spouse)</li>
+          <li><strong>Double accident cover:</strong> ALL lives assured · no waiting period</li>
+          <li><strong>No waiting period:</strong> If client served 6 months with another licensed insurer for 31+ days</li>
+          <li><strong>No more premiums:</strong> On death or disability of main member — ALL members covered until age 65</li>
+          <li><strong>Cash Back:</strong> 100% of ALL premiums after 15 years — no claims required</li>
+          <li><strong>Repatriation:</strong> SA, Namibia, Zimbabwe, Botswana, Swaziland, Lesotho and Mozambique</li>
+          <li><strong>No medicals</strong> · No blood tests · Non-underwritten</li>
+        </ul>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-tag">Life Cover</div>
+        <h3>Immediate Life Cover (ILC)</h3>
+        <ul>
+          <li><strong>Lump sum payout:</strong> Up to R2 000 000 on death or permanent physical impairment</li>
+          <li><strong>No waiting period:</strong> Covered immediately — cover starts the day after approval</li>
+          <li><strong>No medicals:</strong> No blood tests · No health questions required</li>
+          <li><strong>Immediate decision:</strong> Approval or rejection happens immediately on application</li>
+          <li><strong>No occupational exclusions:</strong> Cover regardless of what work you do</li>
+          <li><strong>Disability benefit:</strong> Optional — permanent physical impairment lump sum</li>
+          <li><strong>Escalations:</strong> Optional annual cover increase to keep up with rising cost of living</li>
+          <li><strong>Ages 18–60</strong> · Underwritten by Sanlam Developing Markets (FSP 11230)</li>
+        </ul>
+
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(201,146,42,0.2);">
+          <div class="cheat-tag" style="margin-bottom:10px;">Also Available</div>
+          <ul>
+            <li><strong>Value Funeral Plan:</strong> Cheapest plan · suited for older lives</li>
+            <li><strong>Enhanced Priority Funeral Plan:</strong> Higher-risk extended family cover</li>
+            <li><strong>Essential Med:</strong> Medical insurance (NOT medical aid) · private clients without medical aid access</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(201,146,42,0.2);">
+          <div class="cheat-tag" style="margin-bottom:10px;">Cash Back Illustration</div>
+          <table class="cheat-table">
+            <thead><tr><th>Monthly Premium</th><th>100% Cash Back @ 15 yrs</th></tr></thead>
+            <tbody>
+              <tr><td>R250/month</td><td>R64 735</td></tr>
+              <tr><td>R500/month</td><td>R129 470</td></tr>
+              <tr><td>R1 000/month</td><td>R258 938</td></tr>
+              <tr><td>R1 500/month</td><td>R388 407</td></tr>
+              <tr><td>R2 000/month</td><td>R517 876</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- S1: METROPOLITAN -->
+<div id="s1">
+  <div class="section-header">
+    <div class="section-header-inner">
+      <div class="section-number">01</div>
+      <h2>Metropolitan <span>Life</span></h2>
+    </div>
+  </div>
+  <div class="content">
+    <div class="page">
+      <h3>A. Metropolitan Funeral Plan (Dignified Funeral)</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Feature</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Cover Amount</td><td><ul><li>Up to R80 000: self, spouse and children</li><li>Up to R50 000: parents and extended family</li><li>Cover up to 20 family members on one plan</li><li>No medical tests required</li></ul></td></tr>
+          <tr><td>Premiums</td><td>From R40 per month</td></tr>
+          <tr><td>Payout Speed</td><td><ul><li>86% of claims paid within 24 hours</li><li>Paperless WhatsApp claims — no forms needed</li></ul></td></tr>
+          <tr><td>Key Benefits</td><td><ul><li>Repatriation: deceased transported to burial site within SA</li><li>Memorial Benefit: funds tombstone or memorial ceremony</li><li>Monthly Essentials Benefit: living expense shortfall cover for remaining family</li><li>CashBack (optional): 12.5% of premiums back after 24 months, then every 36 months</li><li>Value Protection (optional): cover increases with inflation</li><li>Payment Protection: premiums covered on death, disability or retirement</li><li>Premium holiday: skip premiums in tough times, cover stays active</li><li>Children: covered for life OR until age 21 — policyholder chooses</li></ul></td></tr>
+          <tr><td>Waiting Periods</td><td><ul><li>3 months: self, spouse, children (natural death)</li><li>6 months: extended family (natural death)</li><li>Accidental death: immediate from first premium</li><li>Suicide: excluded for first 2 years</li></ul></td></tr>
+          <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>CashBack is only 12.5% — Sky's AIO Cash Back returns 100% of ALL premiums paid after 15 years. That is 8x the Metropolitan return for a loyal client.</li><li>WhatsApp claims sound modern but who guides the family when something goes wrong? Sky's adviser is the relationship — Metropolitan has none.</li><li>Sky's AIO includes burial repatriation from SA, Namibia, Zimbabwe, Botswana, Swaziland, Lesotho and Mozambique — know whether your client has family cross-border.</li></ul></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3 style="page-break-before:always;">B. Metropolitan FutureBuilder Savings Plan</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Feature</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>What It Is</td><td><ul><li>Long-term savings / endowment plan — not insurance</li><li>Savings for education, goals or wealth building</li></ul></td></tr>
+          <tr><td>Premiums &amp; Terms</td><td><ul><li>From R220/month; term 5–15 years</li><li>Annual cash withdrawals penalty-free after year 5</li><li>Lump sum contributions accepted</li></ul></td></tr>
+          <tr><td>Key Benefits</td><td><ul><li>Smooth Bonus Fund: stable returns even in volatile markets</li><li>Automatic Inflation Management (AIM): premiums increase annually with inflation</li><li>Tax-free maturity payout</li><li>Premium Waiver on Death/Disability (optional, extra cost, 6-month wait)</li><li>Loyalty bonus for keeping policy in force</li><li>Fund switching; premium bridging if payment missed</li></ul></td></tr>
+          <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>Conservative product — premiums are not invested like a real savings product. Sky's AIO Cash Back returns 100% of ALL premiums after 15 years — that is a genuine, built-in reward for loyalty.</li><li>Metropolitan Premium Waiver is NOT standard — it costs extra and has a waiting period. Sky's AIO includes the no-more-premiums benefit as a standard feature on death or disability of the main member, covering ALL members until age 65.</li><li>Metropolitan does not offer life cover combined with funeral cover. Sky's AIO adds up to R500 000 non-underwritten life cover for main member and spouse — no medicals, no blood tests.</li></ul></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</div>
+
+<!-- S2: OLD MUTUAL -->
+<div id="s2">
+  <div class="section-header">
+    <div class="section-header-inner">
+      <div class="section-number">02</div>
+      <h2>Old Mutual — <span>Funeral Plan Range</span></h2>
+    </div>
+  </div>
+  <div class="content-alt">
+    <div class="page">
+      <p style="color:var(--muted);margin-bottom:16px;">Old Mutual offers three funeral plan tiers. All share core features but differ on cover limits and optional add-ons.</p>
+      <div class="table-wrap"><table class="multi-thead">
+        <thead><tr><th>Feature</th><th>Care</th><th>Standard</th><th>Comprehensive+</th></tr></thead>
+        <tbody>
+          <tr><td>Cover — Main Member</td><td class="multi-col">R5k – R30k</td><td class="multi-col">R5k – R50k</td><td class="multi-col">R5k – R70k</td></tr>
+          <tr><td>Cover — Extended</td><td>R5k – R50k</td><td>R5k – R50k</td><td>R5k – R50k</td></tr>
+          <tr><td>Premium From</td><td>R28/month</td><td>R31/month</td><td>R38/month</td></tr>
+          <tr><td>Accidental Death</td><td>Immediate cover</td><td>Immediate cover</td><td>DOUBLE payout on accidental death</td></tr>
+          <tr><td>Grocery Benefit</td><td>NOT available</td><td>Optional add-on</td><td>Optional add-on</td></tr>
+          <tr><td>Education Benefit</td><td>NOT available</td><td>Optional add-on</td><td>Optional add-on</td></tr>
+          <tr><td>More Cover Benefit</td><td>NOT available</td><td>10% extra free if cover ≥R50k</td><td>10% extra free if cover ≥R50k</td></tr>
+          <tr><td>Premium Holiday</td><td>6 missed premiums lifetime</td><td>6 missed premiums lifetime</td><td>6 missed premiums lifetime</td></tr>
+          <tr><td>Payout Target</td><td>48 hours</td><td>48 hours</td><td>48 hours</td></tr>
+        </tbody>
+      </table></div>
+      <div class="warn-box"><div class="warn-title">⚠ Advisor Angle — All 3 Plans</div>
+        <ul class="list"><li>The Care Plan has NO grocery or education benefit — clients on the cheapest tier get very little beyond cash. Sky's AIO includes a full benefit suite as standard.</li><li>The premium holiday is 6 missed premiums for the ENTIRE lifetime — once used, it is gone. Sky's AIO no-more-premiums benefit on death or disability of the main member is automatic and permanent until age 65.</li><li>OM's double payout on accidental death is only on the Comprehensive+ plan. Sky's AIO gives double accident cover to ALL lives assured on ALL plans — this is not tier-dependent.</li><li>48-hour payout target — know your own Sky claim turnaround and lead with it confidently.</li></ul>
+      </div>
+
+      <h3>Old Mutual Greenlight (Adviser-Sold Life and Risk Cover)</h3>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:14px;">Greenlight is the most common adviser-based product you will encounter. A comprehensive risk platform covering life, disability, severe illness and income protection.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Benefit</th><th>What It Covers</th></tr></thead>
+        <tbody>
+          <tr><td>Life Cover (Death)</td><td><ul><li>Lump sum on death (whole of life or term)</li><li>Covers natural and accidental death</li></ul></td></tr>
+          <tr><td>Comprehensive Disability</td><td><ul><li>Own Occupation: cannot perform duties of their specific job</li><li>Income replacement up to R50 000/month</li><li>Lump sum up to R6 million for permanent impairment post-retirement</li><li>Daily Tasks Benefit: physical and functional impairment at 100%</li></ul></td></tr>
+          <tr><td>Extensive Illness Plus</td><td><ul><li>100% payout on 40+ severe illness events</li><li>Multiple claims allowed — cancer then stroke = two 100% payouts</li><li>Cover reinstated after claim for future unrelated events</li></ul></td></tr>
+          <tr><td>Future Cover Benefit</td><td><ul><li>Increase cover later with 2 health questions + HIV test only</li><li>Protects insurability if health deteriorates</li></ul></td></tr>
+          <tr><td>Premium Protection</td><td><ul><li>Death: premiums paid on behalf of remaining family members</li><li>Disability: premiums waived for duration of disability</li></ul></td></tr>
+          <tr><td>CARE 4U Programme (Free)</td><td><ul><li>24/7 legal helpline: civil, criminal, labour, family, wills</li><li>Financial wellness: credit score, budgeting, debt coaching</li><li>International repatriation at no cost from SADC and worldwide</li><li>Funeral support and referral to undertakers</li><li>Emergency medical assistance and HIV exposure support</li></ul></td></tr>
+          <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>Greenlight is complex. Ask: 'Can you explain your disability cover to me right now?' Most clients cannot. Sky's ILC is simple — up to R2 000 000 life cover, no medicals, no blood tests, covered immediately.</li><li>CARE 4U benefits exist but most clients have never used them or know they have them. Sky's repatriation benefit through the AIO is automatic — no separate helpline to remember.</li><li>Also adviser-sold — this is you vs their current adviser. Sky's adviser relationship is your differentiator.</li><li>Do a full needs analysis. Greenlight clients often have gaps and over-insured areas simultaneously. Sky's ILC and AIO combination can often deliver better value per rand.</li></ul></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- S3: 1LIFE -->
+<div id="s3">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">03</div><h2>1Life <span>Insurance</span></h2></div></div>
+  <div class="content"><div class="page">
+    <h3>A. 1Life Essential Funeral Plan</h3>
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>Cover</td><td><ul><li>R5k–R50k per member; up to 16 family members on one policy</li><li>Up to 10 extended family to age 84</li><li>Online purchase saves up to 40% on premiums — NO adviser</li></ul></td></tr>
+      <tr><td>Payout</td><td>Claims paid within 24 business hours; tax-free lump sum</td></tr>
+      <tr><td>Key Benefits</td><td><ul><li>R6 000 Grocery Benefit (main member dies): R1 000/month for 6 months</li><li>R5 000 Headstone Benefit: paid 1 year after claim via Metgran</li><li>Repatriation: transports deceased from any SADC country to SA</li><li>2-Year Premium Waiver: if main member dies, remaining members free for 2 years</li><li>Spouse takes over policy on main member's death — no new waiting periods</li><li>Fixed premiums for first 12 months</li></ul></td></tr>
+      <tr><td>Waiting Period</td><td>6 months natural death; immediate accidental death</td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>DIRECT — no adviser. Who does the client call for changes, reviews or claim support? Sky's adviser is that person.</li><li>40% online discount is short-term thinking. The client trades advice for price — and a Sky adviser brings ongoing value that justifies the difference.</li><li>Sky's AIO no-more-premiums benefit covers ALL members until the main member would have turned 65 — that is potentially decades of free cover, not 24 months.</li><li>Sky's AIO double accident cover applies to ALL lives assured on the policy. 1Life's accidental cover is simpler. Know the difference before you sit down.</li></ul></td></tr>
+    </tbody></table></div>
+
+    <h3 style="page-break-before:always;">B. 1Life Pure Life Plus (Life and Funeral Combined)</h3>
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>What It Is</td><td><ul><li>Life + funeral combined on one policy; saves 28% vs buying separately</li><li>Still DIRECT — no adviser involved</li></ul></td></tr>
+      <tr><td>Life Cover</td><td><ul><li>Up to R12 million; HIV swab only, no full medical exam</li><li>Terminal illness: 100% payout if life expectancy &lt;12 months</li><li>Cover increases every 3rd anniversary — HIV test only, no full underwriting</li></ul></td></tr>
+      <tr><td>Funeral Cover</td><td><ul><li>Up to R50 000/member; up to 16 family members</li><li>R5 000 memorial benefit + R6 000 grocery benefit included</li><li>Repatriation included</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>Strong product but 28% saving comes at zero ongoing financial advice. Sky's ILC offers up to R2 000 000 immediate life cover — no medicals, no blood tests, covered the day after approval.</li><li>Sky's ILC has no occupational exclusions and no waiting period for death — 1Life Pure Life requires an HIV swab. Know which clients this matters for.</li><li>Sky's AIO combines funeral and life cover in one product, includes the double accident cover, the no-more-premiums benefit and Cash Back — and backed by a dedicated Sky adviser.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+<!-- S4: CLIENTELE -->
+<div id="s4">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">04</div><h2>Clientele Life — <span>Funeral Dignity Plan</span></h2></div></div>
+  <div class="content-alt"><div class="page">
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>Cover</td><td><ul><li>Individual up to R100k; family up to R500k</li><li>Up to 13 people on one plan; premiums from R190/month</li></ul></td></tr>
+      <tr><td>Payout Speed</td><td><ul><li>24-hour guaranteed payout — key marketing message</li><li>Cash lump sum — NO funeral services provided</li></ul></td></tr>
+      <tr><td>Key Benefits</td><td><ul><li>UNIQUE: Premiums Paid Back — beneficiaries receive full cover PLUS all premiums paid for the deceased</li><li>50% of premiums paid in cash at age 65 (if policy taken before age 50)</li><li>R3 000 Grocery Benefit (cash or vouchers) at claim</li><li>R200 airtime at claim to assist with arrangements</li><li>Unveiling Benefit and Transport Benefit included</li><li>24/7 Funeral Helpline: grief counselling, repatriation, discounted suppliers</li><li>Immediate accidental death cover; suicide after 2 years</li></ul></td></tr>
+      <tr><td>Waiting Period</td><td>6 months natural death; immediate accidental death; suicide after 2 years</td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>'Premiums paid back' is a powerful emotional hook — but Sky's AIO Cash Back pays 100% of ALL premiums after 15 years. Know what the client's actual Clientele monthly premium is and calculate their Cash Back equivalent from Sky.</li><li>CALL CENTRE sale — TV ads, celebrity endorsements, then a phone rep. Relationship ends at the sale. Sky's adviser is the ongoing relationship Clientele cannot provide.</li><li>Clients are sold on emotion, not a needs analysis. Ask: is R100k individual cover actually enough to replace income, cover a bond or pay for children's education? Sky's ILC goes up to R2 000 000.</li><li>IMPORTANT: Clientele acquired 1Life in July 2024 and Emerald Life in June 2025 — they now collectively collect over 50% of all funeral premiums from SASSA grant recipients. Know the group when you encounter any of these brands.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+<!-- S5: AVBOB -->
+<div id="s5">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">05</div><h2>AVBOB — <span>Funeral Cover</span></h2></div></div>
+  <div class="content"><div class="page">
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>Cover</td><td><ul><li>R10k–R50k per member; from R46/month</li><li>Guaranteed acceptance — no medicals or health questions</li><li>Extended family to age 85</li></ul></td></tr>
+      <tr><td>The Dual Model</td><td><ul><li>AVBOB is both the INSURER and the FUNERAL SERVICE PROVIDER</li><li>Option 1: AVBOB arranges the funeral — qualifies for up to R23 500 in free membership benefits PLUS policy payout</li><li>Option 2: Client arranges their own funeral — cash payout only, no free service benefits</li></ul></td></tr>
+      <tr><td>Free Benefits (AVBOB service only)</td><td><ul><li>Free basic funeral: R15 000 (coffin, hearse, arrangements)</li><li>R3 000 immediate cash (only after 24 months of continuous cover)</li><li>R3 000 discount on tombstone, cremation or Aquamation</li><li>Free transport anywhere within SA; use of mortuary and hearse</li><li>Tents/chairs, flowers, catering, death registration assistance</li></ul></td></tr>
+      <tr><td>Cashback Plan</td><td><ul><li>5th year's premiums returned in cash every 5 claim-free years</li><li>Whole-life policy — cover does not expire</li></ul></td></tr>
+      <tr><td>Mutual Society Status</td><td><ul><li>Mutual society: profits returned to policyholders not shareholders</li><li>65Alive Cash Benefit: R13.1 billion declared to qualifying members in January 2025</li><li>300+ branches nationally; 100+ years in operation</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>R23 500 in free AVBOB benefits is LOCKED to AVBOB's own funeral service. Client wants their own undertaker? They forfeit everything. Sky's AIO burial repatriation is cash-value-equivalent and not tied to any single funeral provider.</li><li>R3 000 upfront cash only after 24 continuous months — ask how long they have held the policy. Sky's AIO double accident cover is immediate from day one with no service lock-in.</li><li>No adviser network — zero ongoing financial guidance or policy review. Sky's adviser checks in annually.</li><li>AVBOB's 5-year cashback returns one year's premiums every 5 claim-free years. Sky's AIO Cash Back returns 100% of ALL premiums after 15 years — calculate the rand value difference for the client's actual premium.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+
+<!-- S6: ASSUPOL -->
+<div id="s6">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">06</div><h2>Assupol — <span>Funeral &amp; Life Cover Plans</span></h2></div></div>
+  <div class="content-alt"><div class="page">
+    <div class="info-box"><div class="info-title">Important Market Intel</div>Sanlam completed the acquisition of Assupol in October 2024. Assupol is now part of the Sanlam Group. However, it continues to operate independently and advisors will still encounter clients holding Assupol policies. When replacing an Assupol policy with Sanlam Sky, always disclose the group relationship and focus on the product benefits — not just brand loyalty.</div>
+
+    <h3>A. Funeral Plans (Excellence Family and Absolute Advantage)</h3>
+    <div class="table-wrap"><table class="multi-thead"><thead><tr><th>Feature</th><th>Excellence Family Plan</th><th>Absolute Advantage Plan</th></tr></thead><tbody>
+      <tr><td>Distribution Channel</td><td>Face-to-face via intermediary advisers</td><td>Telephone / call centre only</td></tr>
+      <tr><td>Cover — Main Member</td><td>Up to R75 000</td><td>Up to R50 000</td></tr>
+      <tr><td>Cover — Spouse</td><td>Up to R75 000</td><td>Up to R50 000</td></tr>
+      <tr><td>Cover — Children</td><td><ul><li>Covered for LIFETIME (not just to age 21)</li><li>Newborn and stillborn babies covered first 3 months</li></ul></td><td><ul><li>Children also covered</li><li>Extended family members can be added</li></ul></td></tr>
+      <tr><td>Premiums</td><td><ul><li>From R70/month</li><li>48-hour claim payout</li></ul></td><td><ul><li>Flexible premiums</li><li>48-hour payout also applies</li></ul></td></tr>
+      <tr><td>Optional Benefits (both plans)</td><td colspan="2"><ul><li>Double Accidental Death Benefit</li><li>Income Benefit: family receives income for 6 months after main member dies</li><li>Cashback: premiums returned every 4 years if no claims</li><li>Premium Waiver Plus: family covered without premiums after death</li><li>Premium Waiver Retrenchment: 6 months free cover if retrenched</li><li>Memorial Benefit (tombstone)</li></ul></td></tr>
+      <tr><td>Waiting Period</td><td>6 months natural death; immediate accidental death</td><td>6 months natural death; immediate accidental death</td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td colspan="2"><ul><li>KEY: Assupol is NOW part of Sanlam Group (acquired Oct 2024). When a client has Assupol, you are replacing a sister brand — position carefully, professionally, and focus on product merit.</li><li>Sky's AIO Cash Back returns 100% of ALL premiums after 15 years as standard — no claims requirement. Assupol's cashback every 4 years is forfeited the moment any claim is made.</li><li>Sky's AIO includes double accident cover for ALL lives assured and no-more-premiums on death or disability until age 65. Assupol's excellence plan does not combine these in one product.</li><li>Sky's AIO adds up to R500 000 non-underwritten life cover for main member and spouse on top of funeral cover — Assupol requires a separate Progress plan for life cover with its own waiting periods.</li></ul></td></tr>
+    </tbody></table></div>
+
+    <h3 style="page-break-before:always;">B. Progress Life Cover Plans (4Sure, 4Life and Legacy)</h3>
+    <div class="table-wrap"><table class="multi-thead"><thead><tr><th>Feature</th><th>Progress 4Sure</th><th>Progress 4Life</th><th>Progress Legacy</th></tr></thead><tbody>
+      <tr><td>Target Market</td><td>Entry-level; first-time buyers; limited budget</td><td>Families; mid-range cover; flexibility needed</td><td>High-net-worth; maximum cover; comprehensive protection</td></tr>
+      <tr><td>Life Cover</td><td><ul><li>Up to R300 000</li><li>From R90/month</li><li>No blood test; minimal underwriting</li></ul></td><td><ul><li>Up to R1.2 million</li><li>From R120/month</li><li>Immediate cover for natural death</li></ul></td><td><ul><li>Up to R10 million</li><li>From R150/month</li><li>Requires HIV test and health questions</li></ul></td></tr>
+      <tr><td>Built-in Funeral Cover</td><td><ul><li>R10 000 for main member and spouse</li><li>Paid within 24 hours</li></ul></td><td><ul><li>R20 000 for main member</li><li>Cover for spouse, parents and children</li><li>Paid within 24 hours</li></ul></td><td><ul><li>Funeral cover for family included</li><li>Amount determined by plan selected</li></ul></td></tr>
+      <tr><td>Natural Death Cover</td><td>Phases in over 18 months</td><td>Immediate from day one</td><td>Immediate; full underwriting gives certainty</td></tr>
+      <tr><td>Terminal Illness</td><td>95% of death benefit paid on diagnosis</td><td>Included</td><td>Included</td></tr>
+      <tr><td>Loyalty Reward</td><td><ul><li>10% refunded every 10 years (no claims)</li><li>100% refund version at extra premium</li></ul></td><td><ul><li>10% refunded every 15 years (no claims)</li><li>4Life Cashback at extra premium</li></ul></td><td>RA Maturity Reward if holding Carefree Life RA</td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td colspan="3"><ul><li>CRITICAL: Assupol is now part of Sanlam Group (Oct 2024). When replacing a Progress plan, disclose the group relationship and focus on product benefits — not brand loyalty.</li><li>The 4Sure's 18-month natural death phase-in is a significant gap. Sky's ILC has NO waiting period — covered immediately from the day after approval, no medicals, no blood tests.</li><li>Sky's ILC goes up to R2 000 000 non-underwritten life cover — 4Sure caps at R300 000 and 4Life at R1.2 million. For clients needing more cover, Sky wins on both the amount and the underwriting simplicity.</li><li>Assupol's Loyalty Reward requires NO claims for the full 10 or 15 years — any claim resets it. Sky's AIO Cash Back pays 100% of ALL premiums after 15 years regardless of whether claims were made.</li><li>Sky's AIO combines funeral cover AND life cover (up to R500 000) in ONE product — Assupol requires a separate funeral plan AND a Progress life plan. One Sky product can replace both.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+<!-- S7: LIBERTY -->
+<div id="s7">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">07</div><h2>Liberty <span>Life</span></h2></div></div>
+  <div class="content"><div class="page">
+    <h3>A. Liberty Funeral Plus Plan</h3>
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>Cover</td><td><ul><li>R5 000 to R100 000 per member</li><li>Up to 32 people on one policy: spouse, up to 10 children, up to 8 parents, up to 10 extended family</li><li>From R40/month; no medical tests</li><li>Claims paid within 48 hours of all documents received</li></ul></td></tr>
+      <tr><td>Standard Benefits</td><td><ul><li>Repatriation: body transported if more than 100km from burial site within SA</li><li>No impact on waiting periods if client switches from another insurer within 31 days</li><li>Suicide covered after 12 months (shorter than most competitors at 24 months)</li></ul></td></tr>
+      <tr><td>Optional Benefits</td><td><ul><li>Tombstone Benefit: R10 000 per life assured to purchase a tombstone (age 18–64 only)</li><li>Inkomo Cash Benefit: R10 000 cash lump sum for traditional cattle/catering at funeral</li><li>Double Accident Benefit: double the cover amount on accidental death (main member and spouse)</li><li>CashBack Benefit: 10% of premiums paid back every 5 years if no claims</li><li>Paid-Up Benefit: stop paying premiums at age 65 and cover continues for life</li><li>Value Added Benefit: R1 000 airtime + R1 000 groceries + R3 000 transport at claim</li><li>Life Cover Benefit: R200 000 to R1 million life cover added to the funeral plan (no medicals)</li></ul></td></tr>
+      <tr><td>Waiting Period</td><td>6 months natural death; immediate accidental death; suicide after 12 months</td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>The Inkomo Cash Benefit is culturally sensitive and resonates strongly. Sky's AIO burial repatriation covers transport from SA, Namibia, Zimbabwe, Botswana, Swaziland, Lesotho and Mozambique — know which benefit speaks to the client's specific cultural need.</li><li>Paid-Up at 65 is a powerful retention tool. Ask: 'Do you know you can stop paying at 65 and still be covered?' Sky's AIO no-more-premiums benefit triggers earlier — on death or disability, ALL members are covered until the main member would have turned 65.</li><li>Liberty covers up to 32 family members. Sky's AIO is a strong product — know its family size limits before this conversation.</li><li>Liberty is adviser-sold — so again, YOU vs their current Liberty adviser. Your ongoing relationship and Sky's comprehensive AIO product are your pitch.</li></ul></td></tr>
+    </tbody></table></div>
+
+    <h3 style="page-break-before:always;">B. Liberty Lifestyle Protector (Life and Risk Cover)</h3>
+    <div class="table-wrap"><table><thead><tr><th>Benefit</th><th>What It Covers</th></tr></thead><tbody>
+      <tr><td>Life Cover</td><td><ul><li>Lump sum payout on death</li><li>Funeral Benefit of up to R100 000 included inside Lifestyle Protector</li><li>EduCator Benefit: education fees paid directly to institutions for children if main member dies</li></ul></td></tr>
+      <tr><td>Disability Cover</td><td><ul><li>Lump sum or income disability cover</li><li>Own occupation or any occupation definitions available</li></ul></td></tr>
+      <tr><td>Severe Illness</td><td><ul><li>Pays on diagnosis of serious conditions such as cancer, heart attack, stroke</li><li>Claims experience-based definitions</li></ul></td></tr>
+      <tr><td>Value-Added Services (CIMS)</td><td><ul><li>Ambulance access; 24/7 legal helpline</li><li>Repatriation of remains; funeral arrangement assistance</li><li>Grocery vouchers; electricity vouchers; educational support</li><li>HIV exposure support</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>Liberty's CIMS services are comprehensive but clients rarely know they exist. Check what the client actually uses — then show them how Sky's AIO repatriation and support services work as standard.</li><li>Sky's ILC pays up to R2 000 000 with no medicals, no blood tests, and no waiting period — covered the day after approval. Compare this directly against Liberty Lifestyle Protector's underwriting requirements.</li><li>Liberty is a full-service financial house. Position Sky's ILC and AIO as the smarter, simpler choice for this market segment — backed by Sanlam's 100+ years.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+
+<!-- S8: HOLLARD -->
+<div id="s8">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">08</div><h2>Hollard — <span>Funeral Cover and Life Select</span></h2></div></div>
+  <div class="content-alt"><div class="page">
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>Cover</td><td><ul><li>R10 000 to R75 000 per member</li><li>Ages 18–75 eligible; South African resident with bank account</li><li>Claims paid within 48 hours of valid documentation</li></ul></td></tr>
+      <tr><td>Standard Benefits (all policies)</td><td><ul><li>Burial Repatriation: deceased transported from home to burial site within SA</li><li>R250 airtime at time of claim for making arrangements</li><li>Telephonic Legal Assistance: 30-minute free legal consultation per death event</li></ul></td></tr>
+      <tr><td>Optional Benefits</td><td><ul><li>Memorial Benefit: up to R10 000 for tombstone or unveiling ceremony</li><li>Monthly Provider (Grocery) Benefit: up to R2 500/month for 12 months</li><li>Vehicle Access Benefit: use of a car for 6 days to make funeral arrangements</li><li>Premium Holiday: skip December premium every year automatically</li><li>Money-Back Benefit: 20% of premiums returned after 5 claim-free years</li><li>Paid-Up Benefit: stop paying premiums at age 65 and cover continues</li><li>Children covered free up to 5 children in Family Funeral Benefit</li><li>My Life and More: combines funeral, life cover (up to R150 000) and home contents in one plan</li></ul></td></tr>
+      <tr><td>Waiting Period</td><td>6 months natural death; immediate accidental death</td></tr>
+      <tr><td>Channels</td><td><ul><li>Online, WhatsApp and broker/partner channels (e.g. Kaizer Chiefs Funeral Plan)</li><li>Client self-service portal for policy management 24/7</li><li>SA's largest privately owned insurance group — underwrites for many brands</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>Hollard's December premium holiday is a clever retention tool — but Sky's AIO no-more-premiums benefit on death or disability of the main member is permanent, not just a one-month skip per year.</li><li>Hollard's Money-Back returns 20% of premiums every 5 claim-free years. Sky's AIO Cash Back returns 100% of ALL premiums after 15 years — calculate the rand difference for the client's actual premium.</li><li>Hollard underwrites for MANY other brands — clients may not even know their policy is Hollard. Use this to position Sky's transparency: Sanlam Sky is clear about who underwrites and who stands behind the claim.</li><li>'My Life and More' life cover caps at R150 000. Sky's AIO adds up to R500 000 non-underwritten life cover for main member and spouse — no comparison on protection level.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+<!-- S9: HOLLARD SPECIALIST -->
+<div id="s9">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">09</div><h2>Hollard — <span>Specialist Life and Life Select</span></h2></div></div>
+  <div class="content"><div class="page">
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>What It Is</td><td><ul><li>Hollard Specialist Life is a BROKER-ONLY product — not available direct to the public</li><li>Designed to provide accident-related and specialist risk payouts</li><li>Distributed exclusively through licensed brokers and financial advisers</li><li>Product details are not publicly published — full brochure only available via broker login</li></ul></td></tr>
+      <tr><td>Hollard Life Select (Comprehensive Life Cover)</td><td><ul><li>Life cover: minimum R250 000; unlimited maximum (subject to reinsurance and financial justification)</li><li>Interim Accident Benefit: R500 000 payout for accidental death while main cover is being underwritten</li><li>Terminal illness benefit: 100% of cover paid in advance if life expectancy is 12 months or less</li><li>Disability cover: lump sum payout for occupational disability; partial impairment included</li><li>Critical illness cover: pays on diagnosis of major illness, specific conditions or medical procedures</li><li>Children covered until age 25 (full-time students); spouse cover ceases before age 65</li><li>Premium guaranteed for 10 years from inception — no arbitrary annual increases in first decade</li><li>No medical exam required to apply</li><li>30% additional life cover at no extra cost if client had a negative HIV test within the past year</li><li>Inclusive cover for clients living with HIV</li><li>10% premium discount for smokers who intend to quit within 12 months</li></ul></td></tr>
+      <tr><td>Disability Plus Option</td><td><ul><li>Combines disability and impairment cover in one option</li><li>Pays a tax-free lump sum of up to R10 million</li><li>After the waiting period: 1% of the lump sum paid monthly as ongoing income</li><li>Covers both total and partial impairment</li><li>Only exclusion: self-inflicted injuries</li></ul></td></tr>
+      <tr><td>Cashback Benefit</td><td><ul><li>20% of premiums returned every 5 claim-free years</li><li>Applies to both life and disability cover premiums</li></ul></td></tr>
+      <tr><td>My Life and More (Combined Product)</td><td><ul><li>Combines funeral cover (up to R75 000) + life cover (up to R150 000) + home contents insurance in one policy</li><li>One premium; one policy; designed for clients who want consolidated cover with minimal admin</li><li>Children covered up to age 25 if full-time students</li></ul></td></tr>
+      <tr><td>Waiting Period</td><td>No waiting period on life cover; disability requires 3-month survival period; accidental death: immediate cover</td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>Hollard Specialist Life is BROKER-ONLY. If a client has it, a broker sold it — this is you vs another broker. Your relationship and Sky's value proposition are your pitch.</li><li>The 10-year guaranteed premium is strong. Sky's AIO premiums are set by age band — know how they escalate annually and be transparent about it before the client asks.</li><li>Sky's ILC pays up to R2 000 000 — no medicals, no blood tests, no waiting period, immediate decision, cover starts day after approval. This directly beats Hollard Life Select's underwriting process for most Sky market clients.</li><li>Disability Plus paying 1% monthly after the lump sum is sophisticated — most clients cannot explain it. If they have it, ask them to explain it. They usually cannot. Use the gap in understanding to demonstrate your value as an adviser.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+<!-- S10: OM PROTECT -->
+<div id="s10">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">10</div><h2>Old Mutual Protect — <span>Life and Risk Cover</span></h2></div></div>
+  <div class="content-alt"><div class="page" style="padding-top:28px;padding-bottom:28px;">
+    <div class="table-wrap"><table style="font-size:0.8rem;"><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td style="padding:6px 10px;">What It Is</td><td style="padding:6px 10px;"><ul><li>OM's adviser-sold comprehensive risk platform — the equivalent of Greenlight for the mass-affluent and professional market</li><li>Covers life, disability, severe illness and income protection through a modular build-your-own approach</li><li>Adviser-sold only — requires an FNA and personalised quote</li></ul></td></tr>
+      <tr><td style="padding:6px 10px;">Life Cover Options</td><td style="padding:6px 10px;"><ul><li>Protect Life Cover: single tax-free lump sum from R100 000 on death or terminal illness diagnosis</li><li>Protect Life Income Cover: monthly tax-free income from R3 000 paid to family on death for a chosen term</li><li>Protect Last Survivor Cover: pays on the death of the last of two insured persons</li><li>Protect Accidental Death Cover: lump sum specifically for accidental death only</li><li>No medical tests required for cover up to R3 million (lump sum) or R10 000/month (income)</li></ul></td></tr>
+      <tr><td style="padding:6px 10px;">Disability Cover Options</td><td style="padding:6px 10px;"><ul><li>Disability Cover: lump sum if permanently occupationally disabled or functionally impaired</li><li>Disability Income Cover: monthly payments if temporarily, partially or permanently disabled</li><li>Functional Impairment Cover: pays if permanently unable to care for yourself</li><li>Physical Impairment Cover: lump sum for permanent physical impairment e.g. loss of limb or hearing</li><li>Accidental Disability and Death Cover: covers both disability and death from accidents</li><li>Own Occupation Benefit (add-on): pays a lump sum if unable to do your specific job</li></ul></td></tr>
+      <tr><td style="padding:6px 10px;">Severe Illness Cover</td><td style="padding:6px 10px;"><ul><li>Lump sum of R100 000 to R6 million on diagnosis</li><li>Pays full amount for specific severe illnesses including cancer, heart attack, stroke and bypass</li><li>Lifestyle Enhancer: double payout if quality of life severely impacted</li><li>Returning illness: up to 50% of cover amount paid for same illness returning after full claim</li><li>Fertility and pregnancy: up to 50% for endometriosis, eclampsia, stillbirth and related conditions</li><li>Child Severe Illness: up to 10% of cover amount (max R500 000) for child cancer or severe burns</li></ul></td></tr>
+      <tr><td style="padding:6px 10px;">Income Protection Options</td><td style="padding:6px 10px;"><ul><li>Sickness Benefit: up to 24 monthly tax-free payments when booked off work due to illness or injury</li><li>Income Extender Benefit: extends monthly payments beyond 24 months for related events</li><li>Family Support Benefit: up to 3 monthly payments if spouse/child has severe illness</li></ul></td></tr>
+      <tr><td style="padding:6px 10px;">Add-Ons</td><td style="padding:6px 10px;"><ul><li>CashBack: premiums returned at agreed intervals for staying claim-free</li><li>Premium Protection (Death/Disability/Retrenchment)</li><li>Future Life Cover: buy R400 000 to R15 million more cover in future WITHOUT medical tests</li><li>Old Mutual Rewards Programme</li></ul></td></tr>
+      <tr><td style="padding:6px 10px;">Repatriation Service (Free)</td><td style="padding:6px 10px;"><ul><li>Deceased transported to funeral home nearest place of burial within SA</li><li>One accompanying relative's transport and overnight accommodation arranged if needed</li></ul></td></tr>
+      <tr class="angle-row"><td style="padding:6px 10px;"><span class="angle-label">⚠ Advisor Angle</span></td><td style="padding:6px 10px;"><ul><li>OM Protect is a comprehensive risk platform — your best counter is Sky's ILC (up to R2 000 000, no medicals, no waiting period, immediate approval) combined with the AIO (funeral + life + double accident + Cash Back + no-more-premiums). Two Sky products can often replace the complexity of Protect at better value for the mass market.</li><li>The Life Income Cover option (monthly payout to family) is unique — most clients don't understand the difference between lump sum and income cover. Use this as a needs analysis conversation starter.</li><li>Future Life Cover is a very strong retention tool — clients fear losing insurability. Sky's ILC requires no medicals and no blood tests — the client does not need to fear losing cover if their health changes, because there is nothing to lose on reapplication.</li><li>Premium Protection on Retrenchment is rare. Note whether the client's income is salaried/government (PERSAL) or private — this affects how exposed they are to retrenchment risk.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+
+<!-- S11: DISCOVERY -->
+<div id="s11">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">11</div><h2>Discovery <span>Life</span></h2></div></div>
+  <div class="content"><div class="page">
+    <h3>A. Discovery Funeral Plan (Essential and Classic)</h3>
+    <div class="table-wrap"><table class="multi-thead"><thead><tr><th>Feature</th><th>Essential Plan</th><th>Classic / Classic Max Plan</th></tr></thead><tbody>
+      <tr><td>What It Offers</td><td><ul><li>Core efficient funeral cover</li><li>Lower premium entry point</li></ul></td><td><ul><li>Enhanced benefits</li><li>CashBack reward every year</li><li>Classic Max = highest cover level</li></ul></td></tr>
+      <tr><td>Premiums From</td><td>From R34/month</td><td>Higher than Essential</td></tr>
+      <tr><td>Medical Scheme Discount</td><td>15% off premiums for Discovery Health Medical Scheme, LA Health or Flexicare members</td><td>15% discount also applies</td></tr>
+      <tr><td>CashBack Benefit</td><td>Not available on Essential</td><td><ul><li>1 month's premium back every year</li><li>Up to 100% of premiums back at age 65</li></ul></td></tr>
+      <tr><td>Upfront Benefit</td><td><ul><li>Nominal amount paid within 48hrs of death certificate — reduces life cover payout</li><li>Requires policy in force for at least 2 years</li></ul></td><td>Same upfront benefit applies</td></tr>
+    </tbody></table></div>
+
+    <h3 style="page-break-before:always;">B. Discovery Life Plan (Essential, Classic and Purple)</h3>
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>The Core Difference</td><td><ul><li>Discovery Life is built on the 'shared value' model — it rewards healthy living with premium discounts and cash back</li><li>In 2024, Discovery paid R5.5 billion in living benefits and rewards vs R3.4 billion in death claims</li><li>Discovery Life holds 27.3% market share — the largest single insurer in the life market</li></ul></td></tr>
+      <tr><td>Vitality Integration</td><td><ul><li>Upfront premium discount of up to 48% by linking to Vitality, Discovery Health and/or Discovery Bank</li><li>Vitality status (Bronze, Silver, Gold, Diamond) drives discount level</li><li>Higher status = healthier engagement = lower premium</li></ul></td></tr>
+      <tr><td>PayBack Benefit</td><td><ul><li>Guaranteed PayBack: up to 15% of premiums back in first 10 years</li><li>Vitality-linked PayBack: up to 50% of premiums back, paid in cash every 5 years</li><li>Double PayBack option: delay by 5 years and receive up to 100% of premiums back</li><li>R13.2 billion total paid out in PayBacks to date</li></ul></td></tr>
+      <tr><td>Cash Conversion Benefit</td><td><ul><li>At age 65: up to 100% of Life Fund value paid out in 10 yearly installments</li><li>Does NOT reduce your life cover</li><li>Amount grows if you manage your health before age 65</li></ul></td></tr>
+      <tr><td>Plans Available</td><td><ul><li>Essential Life Plan: cost-effective with market-comparable benefits</li><li>Classic Life Plan: market-leading comprehensive cover with full PayBack and rewards</li><li>Purple Life Plan: bespoke cover for R10 million+ life cover, high-net-worth clients</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>Discovery is the most aspirational brand in SA insurance — clients feel sophisticated having it. Don't fight the brand, fight the gaps. Sky's ILC at up to R2 000 000 with no medicals and no waiting period is a simpler, faster proposition for most Sky market clients.</li><li>The 48% Vitality discount requires full integration: Discovery Health Medical Aid + Discovery Bank + active Vitality engagement. Most clients are not fully integrated and get a fraction of the discount. Ask: 'What is your Vitality status right now?'</li><li>Discovery's CashBack on the funeral Classic plan is 1 month's premium per year — capped at 100% of premiums at age 65. Sky's AIO Cash Back returns 100% of ALL premiums at year 15, regardless of Vitality status or ecosystem integration.</li><li>Discovery Life complexity is high — the Life Fund, PayBack, Cash Conversion and integration rules confuse most clients and many advisers. Sky's AIO and ILC are clear, simple products. Clarity is a competitive advantage.</li><li>Discovery is adviser-sold — their advisers are often strong and well-trained. Your edge is personal service and the simplicity of the Sky product for this market segment.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+<!-- S12: EMERALD -->
+<div id="s12">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">12</div><h2>Emerald Life — <span>Funeral Cover</span></h2></div></div>
+  <div class="content-alt"><div class="page">
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>What It Is</td><td><ul><li>South Africa's first licensed life microinsurer — focused on affordable funeral cover for all market segments including grant recipients</li><li>Adviser-sold via a national tied-adviser network of 26 branches nationally</li><li>IMPORTANT: Emerald Life was acquired by Clientele in June 2025 — it is now part of the Clientele cluster</li><li>Emerald Life policies are underwritten by Lion of Africa Life Assurance (not Emerald itself)</li></ul></td></tr>
+      <tr><td>Care Family Funeral Plan</td><td><ul><li>Cover: R5 000 to R30 000 for main member, spouse and extended family</li><li>Children: cover based on main member amount (legal limits apply)</li><li>Double Accidental Death Benefit: ONLY applies if cover is R15 000 or less</li><li>Emerald-Life-On-Call helpline (0860 555 991): claim assistance, repatriation, credible undertaker referrals</li><li>Premiums from R65/month; up to 18 family members on one plan</li></ul></td></tr>
+      <tr><td>Advanced Funeral Plan Family (DFA)</td><td><ul><li>Aimed at grant beneficiaries and working families</li><li>Cover: main member and spouse up to R30 000; children up to R22 500</li><li>Extended Family Plan: up to R20 000 divided among covered extended family members</li><li>No age limit; 3-month waiting period for natural death; immediate accidental death cover</li></ul></td></tr>
+      <tr><td>Advanced Funeral Plan Pensioner (DPA)</td><td><ul><li>Specifically designed for older grant beneficiaries (pensioners)</li><li>Main member: maximum R13 500; dependent children: maximum R12 500</li><li>Extended Family Plan: up to R20 000</li><li>Premiums from R80; SASSA and Post Bank card deduction accepted</li></ul></td></tr>
+      <tr><td>Waiting Period</td><td>3 months for natural death (shorter than most competitors at 6 months); immediate accidental death cover</td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>CRITICAL MARKET INTEL: Emerald Life was acquired by Clientele in June 2025. Clientele now controls Emerald, 1Life and their own products — together over 50% of all SASSA funeral deductions.</li><li>Emerald's max cover is R30 000 for the main member — Sky's AIO starts at R10 000 (Plan 1) and goes up to R90 000 (Plan 9) on the funeral portion alone, plus up to R500 000 non-underwritten life cover on top. The gap is clear.</li><li>The double accidental death benefit on Emerald ONLY applies if cover is R15 000 or less. Sky's AIO double accident cover applies to ALL lives assured at ANY cover level — no restriction.</li><li>Emerald uses tied advisers like Sky does — the relationship model is similar. Your edge is Sky's superior product range, the AIO Cash Back after 15 years, and Sanlam's 100+ year heritage.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+<!-- S13: FNB -->
+<div id="s13">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">13</div><h2>FNB <span>Life Insurance</span></h2></div></div>
+  <div class="content"><div class="page">
+    <h3>A. FNB Funeral Plan</h3>
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>Cover</td><td><ul><li>R2 000 to R100 000 per member; from R50/month</li><li>Up to 21 family members on one plan including extended family</li><li>Underwritten by FirstRand Life Assurance Limited</li></ul></td></tr>
+      <tr><td>Payout Speed</td><td><ul><li>1 in 5 claims paid within 30 minutes</li><li>Remainder paid within 24 hours of valid claim</li><li>FNB proactively searches Home Affairs records to find beneficiaries — pays out even if claim not initiated</li><li>Underwritten by the oldest bank in South Africa (est. 1838) — 1.5 million policies, 4.3 million lives covered</li></ul></td></tr>
+      <tr><td>Key Benefits</td><td><ul><li>Double Accidental Death Benefit: up to R200 000 for main member and spouse on accidental death</li><li>Burial Repatriation: transport of deceased to burial site within SA borders; one accompanying family member with overnight accommodation</li><li>CashBack Reward: up to 6 months premiums refunded after 3 claim-free years</li><li>5% annual premium and cover escalation (opt out available annually)</li><li>eBucks rewards on qualifying FNB life and funeral products</li><li>Suicide waiting period: 12 months (shorter than most competitors at 24 months)</li></ul></td></tr>
+      <tr><td>Waiting Period Switch Benefit</td><td>If client switches from any SA-licensed insurer where waiting period is already served, FNB waives the waiting period immediately for same lives and same cover amounts</td></tr>
+      <tr><td>Waiting Period</td><td>6 months natural death; 12 months suicide; immediate accidental death</td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>FNB is BANK-sold — tied to FNB banking. Non-FNB clients get less value (no eBucks). Ask: 'Do you actually bank with FNB or did you take this separately?' Sky's AIO is available to any South African without a banking relationship requirement.</li><li>The 30-minute claim payment for 1-in-5 claims is FNB's strongest marketing message. Position Sky's adviser as the person who personally guides the family through the claim — that is a relationship, not a processing speed.</li><li>FNB's CashBack returns up to 6 months' premiums after 3 claim-free years. Sky's AIO Cash Back returns 100% of ALL premiums after 15 years — calculate the rand difference for the client's actual premium amount.</li><li>FNB's switch benefit waives the waiting period — so does Sky's AIO. If a client has served the 6-month wait anywhere and has been covered for 31+ days, Sky can take them on immediately with no new waiting period.</li></ul></td></tr>
+    </tbody></table></div>
+
+    <h3 style="page-break-before:always;">B. FNB Life Insurance and Life and Legacy Plan</h3>
+    <div class="table-wrap"><table><thead><tr><th>Product</th><th>Key Features</th></tr></thead><tbody>
+      <tr><td>FNB Life Insurance (Core)</td><td><ul><li>Life cover plus critical illness, permanent disability and income protection</li><li>R30 000 funeral benefit included at no extra cost — paid within 24 hours on death</li><li>Spend Protect Benefit: pays immediately to cover groceries and household bills</li><li>Up to R6 million life cover with disability and critical illness in under 30 minutes</li></ul></td></tr>
+      <tr><td>FNB Life and Legacy Plan</td><td><ul><li>R100 000 to R1.5 million life cover</li><li>Payout options: lump sum, monthly income for 24 months, Minor Beneficiary Trust, or combination</li><li>R30 000 upfront funeral benefit paid within 24 hours of death — separate from life cover amount</li><li>Family funeral cover: spouse and up to 5 children included</li><li>Up to R100 000 towards executor fees included</li><li>FNB Will included with secure safekeeping at no additional cost</li><li>Burial Repatriation included</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>Sky's ILC pays up to R2 000 000 — no medicals, no blood tests, no waiting period, immediate decision, cover starts the day after approval. FNB Life and Legacy caps at R1.5 million and requires more underwriting steps.</li><li>The executor fees benefit (up to R100 000) reduces estate wind-up costs. Use this as a needs analysis trigger — does the client have a will? Does their Sky policy address estate costs? Pair ILC with proper estate planning conversation.</li><li>FNB Life is BANK-sold — cross-sold to FNB banking clients. Sky's adviser is the ongoing relationship that FNB cannot replicate. When life changes, Sky's adviser reviews. FNB does not.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+
+<!-- S14: ABSA -->
+<div id="s14">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">14</div><h2>Absa <span>Life Insurance</span></h2></div></div>
+  <div class="content-alt"><div class="page">
+    <h3>A. Absa Flexi Funeral Plan</h3>
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>Product: Flexi Funeral Plan</td><td><ul><li>Cover: main member and spouse up to R100 000; children and extended family up to R50 000 each</li><li>Extended family: up to 8 members (parents, in-laws, siblings, aunts, uncles, nieces, nephews, cousins, grandparents, grandchildren, great-grandparents, employees)</li><li>No medical examinations required; from R50/month</li><li>Underwritten by Absa Life Limited (FSP 36116)</li></ul></td></tr>
+      <tr><td>Key Benefits</td><td><ul><li>Double Accidental Death: up to R100 000 double payout for main member, spouse or family members over 18 — at no additional cost</li><li>Burial Repatriation: transport to nearest funeral home in SA included at no extra cost</li><li>Optional Grocery, Unveiling and After-funeral Benefits (at additional cost)</li><li>Cover for life if cover is taken for children — no age expiry</li><li>3% annual cover increase option to keep pace with rising funeral costs</li><li>If premiums paid for 5 or more years and policyholder dies, remaining insured continue to be covered (survivorship benefit)</li></ul></td></tr>
+      <tr><td>Switch Benefit</td><td>No waiting period for natural death if switching from comparable cover at another SA-licensed insurer where waiting period was already served</td></tr>
+      <tr><td>Waiting Period</td><td>6 months natural death; 12 months suicide; immediate accidental death</td></tr>
+      <tr><td>Banking Integration</td><td><ul><li>First 3 life cover premiums refunded after 6 months for registered Absa Digital Banking clients</li><li>Absa Flexi Account includes free R15 000 funeral cover embedded in the transactional account</li><li>Islamic Flexi Value Bundle includes Takaful death benefit (Shariah-compliant structure)</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>BANK-sold — primarily cross-sold to Absa clients. The free R15 000 embedded in the Flexi Account is a starting point, not a solution. Sky's AIO funeral cover starts at R10 000 and goes up to R90 000 (Plan 9) — plus up to R500 000 non-underwritten life cover on top.</li><li>Absa has NO cashback on the Flexi Funeral Plan. Sky's AIO Cash Back returns 100% of ALL premiums after 15 years — for a client paying R100/month, that is R18 000 back after 15 years with no claims condition.</li><li>Absa's switch benefit waives the waiting period. Sky's AIO does too — if a client has served the 6-month wait and has been with another licensed insurer for 31+ days, they qualify immediately.</li><li>The survivorship benefit (5 years = family covered after death) is good. Sky's AIO no-more-premiums benefit goes further — ALL members covered until the main member would have turned 65, not just until a fixed term expires.</li></ul></td></tr>
+    </tbody></table></div>
+
+    <h3 style="page-break-before:always;">B. Absa Life Insurance Products</h3>
+    <div class="table-wrap"><table><thead><tr><th>Product</th><th>Key Features</th></tr></thead><tbody>
+      <tr><td>Absa Life@Ease (Comprehensive Risk)</td><td><ul><li>Up to R6 million life cover for life, disability and critical illness in under 30 minutes</li><li>Includes: death benefit, accidental death, functional impairment, physical impairment, critical illness, catch-all disability, income protection</li><li>Final Expenses Benefit (funeral plan component): pays within 48 hours for immediate funeral costs</li><li>Catch-all disability: covers both total and partial disability</li></ul></td></tr>
+      <tr><td>Absa Life Xtreme</td><td><ul><li>Designed for adrenaline junkies and high-risk sports participants aged 18–45</li><li>Covers accidental death (up to R1 million) and serious injury from bungee jumping, scuba diving and mountain biking</li><li>Does NOT cover natural death or dread disease — purely accident and injury</li></ul></td></tr>
+      <tr><td>Credit Protection Plans</td><td><ul><li>Covers Absa loan repayments, credit card bills, vehicle and asset finance if client dies, becomes disabled or critically ill</li><li>Reduces financial burden on family for Absa-linked debt specifically</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>Sky's ILC pays up to R2 000 000 — no medicals, no blood tests, no waiting period, immediate decision, cover starts the day after approval, no occupational exclusions. Position this directly against Absa Life@Ease for the Sky market client.</li><li>Life Xtreme is unique in the market for extreme sports participants. If the client does high-risk activities, note this gap and discuss honestly — Sky's ILC has no occupational exclusions, but high-risk activities may need specialist advice.</li><li>Credit Protection protects Absa's loan portfolio first. Sky's ILC and AIO protect the CLIENT's family, not the bank's balance sheet. Frame the conversation around who the policy is really designed to benefit.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+<!-- S15: CAPITEC -->
+<div id="s15">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">15</div><h2>Capitec — <span>Life Insurance and Funeral Cover</span></h2></div></div>
+  <div class="content"><div class="page">
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>Market Position — CRITICAL</td><td><ul><li>Capitec issues 1 in every 3 NEW funeral policies in South Africa</li><li>2.7 million active policies covering over 12 million lives</li><li>Pricing at R102.95 vs competitor R360 for the same R50 000 cover — roughly a third of the cost</li><li>Underwritten by Capitec Life Limited (FSP 54090) — their own in-house insurer since 2021</li></ul></td></tr>
+      <tr><td>Funeral Cover</td><td><ul><li>R100 000 cover for main member (ages 18–64); from R25/month</li><li>Extended family up to R50 000; up to 21 family members on one policy</li><li>Buy via app, USSD or branch — no adviser required</li></ul></td></tr>
+      <tr><td>Key Benefits</td><td><ul><li>Double Accidental Death Benefit from day one — no waiting period for accidents</li><li>Repatriation: from SA, Namibia, Zimbabwe, Botswana, Swaziland, Lesotho and Mozambique to chosen funeral home in SA; one family member's transport and overnight accommodation included</li><li>Newborn Benefit: 6 months free cover when baby or adopted child is added within 3 months of birth (after 12-month policy wait)</li><li>Survivorship: all dependants covered for 6 months free if policyholder dies after policy is in force</li><li>Policy Pause: suspend cover and premiums for up to 6 months (24-month wait to access this)</li><li>Waiting Period Waiver on Switch: if switching from another SA insurer where waiting period is served, Capitec waives it immediately</li></ul></td></tr>
+      <tr><td>Life Cover</td><td><ul><li>Flexible payout options: lump sum; monthly income for 24 months; Minor Beneficiary Trust (to age 21); or combination of all three</li><li>Minor Beneficiary Trust: manages funds for nominated children up to age 21; up to 10 minor beneficiaries</li></ul></td></tr>
+      <tr><td>Waiting Period</td><td>6 months natural death; immediate accidental death</td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>Capitec is the single biggest threat to Sky in the mass market. R25/month vs Sky's AIO premiums from R22/month for R10 000 cover — the entry prices are actually comparable. Win on the complete value package: double accident cover, no-more-premiums, life cover up to R500 000, and 100% Cash Back after 15 years.</li><li>Capitec funeral cover is DIGITAL ONLY and BANK-tied. No adviser, no relationship, no review. Sky's adviser is the service the client is not getting at R25/month.</li><li>Capitec's survivorship gives 6 months free cover after the policyholder dies. Sky's AIO no-more-premiums benefit covers ALL members until the main member would have turned 65 — potentially many more years of free cover for the family.</li><li>1-in-3 new funeral policies is Capitec's. Every month advisors delay a sale, Capitec may have already sold that client a policy. Speed and presence at the worksite is your advantage.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+
+<!-- S16: SANLAM LIFE -->
+<div id="s16">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">16</div><h2>Sanlam Life Insurance — <span>Personal Life and Risk Cover</span></h2></div></div>
+  <div class="content-alt"><div class="page">
+    <div class="warn-box"><div class="warn-title">⚠ Important — Know the Difference</div>Sanlam Life (covered here) is the broader Sanlam Group's personal life and risk insurance platform — sold by Sanlam financial advisers across all market segments. Sanlam Sky is a separate, specialist brand within the Sanlam Group focused on the low-income and worksite market with its own specific products (Value Funeral Plan, Enhanced Priority Funeral Plan, All-in-One Plan, Immediate Life Cover, and Essential Med). When a client says 'I have a Sanlam policy', ask which brand — it could be Sanlam Life, Sanlam Sky, Sanlam Indie, or another Sanlam Group product. This matters for replacement conversations.</div>
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>Life Cover — Core Product</td><td><ul><li>Tax-free lump sum payout on death — amount determined by financial needs analysis</li><li>Two payout components: (1) Immediate Expenses benefit paid within 2 days; (2) Full life cover payout after claims process is completed</li><li>Two options: With health/lifestyle questions (enhanced benefits) or without (essential protection only)</li><li>No waiting period — cover begins as soon as policy is activated</li><li>Full cover regardless of occupation</li><li>Accelerated terminal illness payout if life expectancy is 12 months or less</li><li>Free Will: no charge for drafting, collection, safekeeping and unlimited amendments</li></ul></td></tr>
+      <tr><td>Disability Cover</td><td><ul><li>Lump sum payout for permanent disability</li><li>R444.9 million paid in disability, loss of income and impairment claims in 2022</li><li>Options: occupational disability, functional impairment, physical impairment</li></ul></td></tr>
+      <tr><td>Income Protection</td><td><ul><li>Monthly payout for temporary and permanent illness or disability</li><li>Protects current lifestyle when unable to work — replaces income rather than a lump sum</li><li>Covers both partial and total disability</li></ul></td></tr>
+      <tr><td>Severe Illness Cover</td><td><ul><li>Pays out on diagnosis of a serious illness including cancer, heart attack and stroke</li><li>Covers unexpected costs NOT covered by medical aid</li><li>R650.3 million paid for severe illness and injury cover claims in 2024</li><li>Cancer Benefit: dedicated cover for cancers, tumours, leukaemia and lymphomas</li></ul></td></tr>
+      <tr><td>Cashback Benefit (optional)</td><td><ul><li>Pays 100% of contributions back after 15 years of continued payments — no claims required</li><li>Costs an additional 35% on the specific cover layer premium</li><li>Available on qualifying new or existing Premier risk plans only</li><li>Sanlam Reality Plus members get up to 30% discount on the premium</li></ul></td></tr>
+      <tr><td>Wealth Bonus®</td><td><ul><li>A portion of every premium is invested in a Money Market fund by Sanlam on the client's behalf</li><li>Unlocks in stages: Premier plans unlock every 5 years until retirement</li><li>Available at no extra cost on qualifying flagship (Matrix Premier) plans</li><li>If client cancels, lapses or dies — locked Wealth Bonus is lost</li><li>Performance-linked: if market underperforms, Wealth Bonus underperforms</li></ul></td></tr>
+      <tr><td>Sanlam Reality (Rewards Programme)</td><td><ul><li>Reality Plus members save up to 30% on qualifying Sanlam Premier risk product premiums</li><li>Free lifestyle benefits: FlySafair 10% off, Uber 20% off after-hours, RSAWEB 10% off fibre, Intercape 20% off, gym discounts, LekkeSlaap 5% off</li><li>Paid tiers (Club, Core, Plus) from R53/month for bigger discounts and more benefits</li><li>Discount applies to debit order payments only — stop order does NOT qualify</li></ul></td></tr>
+      <tr><td>Product Range Structure</td><td><ul><li>Classic: traditional product range with basic features</li><li>Express: simplified underwriting up to R5 million life, disability and severe illness in minutes</li><li>Premier / Matrix Premier: flagship comprehensive range with Wealth Bonus, Cashback and Reality discounts</li><li>Group Risk: employer-sponsored life, disability, income and funeral cover for employees</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>When a client says 'I have Sanlam' — first clarify WHICH Sanlam product and brand. Sanlam Life Matrix Premier is a very different product from Sanlam Sky's AIO or ILC. Do not assume.</li><li>The Cashback benefit's 35% premium loading means the client pays significantly more monthly. Sky's AIO Cash Back is included at no extra premium loading — 100% of ALL premiums back after 15 years is built in.</li><li>Wealth Bonus is NOT guaranteed — it performs like an investment and can underperform. Clients often treat it as a guaranteed return. Use this misconception as a needs analysis entry point.</li><li>The Reality discount (up to 30%) only applies on debit order and only on qualifying Premier products. Stop order clients and Classic clients get nothing — this is a common gap in the government employee segment Sky serves.</li><li>Sky's ILC matches Sanlam Life on the key selling point: no waiting period, covered immediately, no medicals — but Sky's ILC is designed specifically for the mass market at accessible premiums.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+<!-- S17: KING PRICE -->
+<div id="s17">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">17</div><h2>King Price Life Insurance — <span>Formerly Stangen</span></h2></div></div>
+  <div class="content"><div class="page">
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>Background</td><td><ul><li>King Price Life was previously known as Stangen (Standard General Insurance Company) — established in 1948</li><li>King Price acquired Stangen in 2020 for R140 million and rebranded it as King Price Life Insurance Ltd</li><li>King Price is best known for its car insurance with decreasing premiums — life and funeral is a newer, growing division</li><li>Products are intermediary-distributed and also available directly via WhatsApp and online</li><li>FSP no. 47235; licensed life insurer and registered financial services provider</li></ul></td></tr>
+      <tr><td>Funeral Cover</td><td><ul><li>Individual and family funeral cover up to R50 000 per member</li><li>Group/scheme funeral cover up to R100 000</li><li>No medical examinations required</li><li>6-month waiting period for natural death; immediate for accidental death; 12 months for suicide</li><li>6-month premium waiver benefit: remaining insured continue to be covered for 6 months after the policyholder's death at no cost</li></ul></td></tr>
+      <tr><td>Life Cover</td><td><ul><li>R100 000 to R10 million life cover</li><li>No waiting period — cover is immediate (marketed as a key differentiator)</li><li>No medical examination required; fully digital underwriting process</li><li>Accelerated Funeral Add-on: R30 000 paid within 24 hours of death to cover immediate funeral costs while full life claim is investigated</li><li>Terminal illness: accelerated payout if life expectancy is 12 months or less</li></ul></td></tr>
+      <tr><td>Salary Protection</td><td><ul><li>Pays up to 75% of the policyholder's monthly salary (capped at R90 000/month) if they become disabled due to illness or injury</li><li>Payments continue until able to return to work or until retirement</li><li>Deferred and waiting periods apply before payments begin</li></ul></td></tr>
+      <tr><td>Commuter Cover</td><td><ul><li>Unique product covering accidents that occur while commuting to or from work</li><li>Pays a lump sum for death or serious injury sustained during a commute</li></ul></td></tr>
+      <tr><td>Crime Injury Cover</td><td><ul><li>Pays a lump sum if the policyholder is hospitalised or dies due to a violent crime such as assault or rape</li><li>Unique in the market — few other insurers explicitly cover crime-related injuries</li></ul></td></tr>
+      <tr><td>Group and Employer Products</td><td><ul><li>Group Life cover up to R10 million per person</li><li>Group Lump Sum Disability and Group Income Disability</li><li>Group Funeral cover up to R100 000 for members and their families</li><li>Credit Life: covers members' loans on death, disability and retrenchment</li><li>Estate Product: covers all legal and administrative costs of winding up the estate</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>King Price markets NO WAITING PERIOD on life cover as their key differentiator. Sky's ILC also has NO waiting period — covered immediately from the day after approval, no medicals, no blood tests, up to R2 000 000. This is a direct, equal counter.</li><li>King Price funeral cover caps at R50 000 per member. Sky's AIO goes up to R90 000 on funeral cover (Plan 9) plus up to R500 000 non-underwritten life cover on top — in one combined product.</li><li>King Price is a SHORT-TERM insurance brand that added life. Sanlam Sky is a specialist life and funeral house with over 100 years behind it. Do not fight the brand — demonstrate the depth of expertise and product design.</li><li>King Price's funeral plan has a 6-month premium waiver on death. Sky's AIO no-more-premiums covers ALL members until the main member would have turned 65 — not just 6 months.</li><li>Sky's AIO Cash Back returns 100% of ALL premiums after 15 years. King Price has no equivalent cashback on their funeral plan. Calculate the rand value for the client's actual premium.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+
+<!-- S18: WORKERSLIFE -->
+<div id="s18">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">18</div><h2>Workerslife — <span>POPCRU 25 Funeral Benefit Policy</span></h2></div></div>
+  <div class="content-alt"><div class="page" style="padding-top:28px;padding-bottom:28px;">
+    <div class="table-wrap"><table style="font-size:0.8rem;"><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td style="padding:7px 10px;">What It Is</td><td style="padding:7px 10px;"><ul><li>Workerslife Assurance Company Limited (FSP 392) — specialist insurer for public sector workers</li><li>POPCRU 25 Funeral Benefit Policy — designed specifically for POPCRU union members (South African Police, Correctional Services, Courts)</li><li>Premiums collected via PERSAL, payroll deduction, ACB or private deduction — no bank debit order required</li><li>Entry age: main member must be 65 or younger at application</li></ul></td></tr>
+      <tr><td style="padding:7px 10px;">Cover Structure</td><td style="padding:7px 10px;"><ul><li>Main member and spouse: up to age 70</li><li>Up to 2 spouses: one on the Basic Plan, one as a voluntary Second Spouse add-on</li><li>Children: up to 7 children covered; up to age 26; includes stepchildren, adopted children, disabled adult children and stillborn children (from 26 weeks)</li><li>Extended family: up to 10 members covered; ages 0–80; two premium tiers (under 65 and 65–80)</li><li>Memorial Cover: voluntary add-on for main member, spouse and second spouse only</li></ul></td></tr>
+      <tr><td style="padding:7px 10px;">Additional Benefits</td><td style="padding:7px 10px;"><ul><li>Vehicle Access Benefit: 3-day car hire (Group B — Toyota Yaris/VW Polo or similar) on death of main member, spouse or nominated children; no deposit; first tank of petrol free; unlimited mileage; beneficiary may nominate a driver</li><li>Airtime Benefit: R250 airtime (CellC, MTN, Mobile or Vodacom) per claim for main member, spouse and children</li><li>Repatriation Benefit: transport of deceased to hometown within SA including Swaziland and Lesotho; minimum 50km; max R20 000 per policy per annum and R7 500 per covered life; service only — cannot be converted to cash</li></ul></td></tr>
+      <tr><td style="padding:7px 10px;">Premium Waiver Benefits</td><td style="padding:7px 10px;"><ul><li>On death of main member: family covered for 120 months (10 years) with no premiums — one of the longest premium waivers in the market</li><li>Cancels if surviving spouse remarries</li><li>On suspension without pay: 6-month premium waiver for main member; can only be claimed twice in the lifetime of the policy</li><li>Does NOT apply to Additional Cover, Second Spouse, Memorial Cover or Extended Family</li></ul></td></tr>
+      <tr><td style="padding:7px 10px;">Waiting Periods</td><td style="padding:7px 10px;"><ul><li>Accidental death: immediate from first premium — no waiting period for main member, spouse, children or extended family</li><li>Natural death — main member, spouse, children: 1 month (1 premium required)</li><li>Natural death — second spouse and extended family under 65: 3 months (3 premiums required)</li><li>Natural death — extended family 65–80: 6 months (6 premiums required)</li><li>Premium Waiver, Additional Cover, Memorial Cover: 6 months (6 premiums required)</li><li>Suicide: excluded for first 12 months from inception</li></ul></td></tr>
+      <tr><td style="padding:7px 10px;">Claims</td><td style="padding:7px 10px;"><ul><li>Claim must be submitted within 12 months of date of death</li><li>No additional forms needed for vehicle, airtime or repatriation — automatically processed after funeral claim approval</li><li>Contact: 0861 520 520</li></ul></td></tr>
+      <tr class="angle-row"><td style="padding:7px 10px;"><span class="angle-label">⚠ Advisor Angle</span></td><td style="padding:7px 10px;"><ul><li>Workerslife is UNION-linked (POPCRU) — the policyholder has emotional and institutional loyalty. Do not attack the union. Position Sky's AIO as the complement: Workerslife covers the funeral, Sky's AIO adds up to R500 000 non-underwritten life cover for the main member and spouse.</li><li>The 120-month (10-year) premium waiver on death is exceptional — very few competitors match this. Sky's AIO no-more-premiums benefit covers ALL members until the main member would have turned 65, which could be longer than 10 years for younger members.</li><li>The 1-month natural death waiting period for main member, spouse and children is shorter than Sky's standard 6-month wait. However, Sky's AIO waives the 6-month wait entirely for clients who have served it with another insurer for 31+ days — use this if doing a switch.</li><li>PERSAL deduction means the client never touches the premium — very low lapse risk. Workerslife policies are sticky. Your replacement or top-up conversation must show a clear product benefit gap, not just price.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+<!-- S19: THE UNLIMITED -->
+<div id="s19">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">19</div><h2>The Unlimited — <span>Life Cover and Accidental Injury</span></h2></div></div>
+  <div class="content"><div class="page">
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>What It Is</td><td><ul><li>The Unlimited Group (Pty) Ltd (FSP 21473) — intermediary and binder holder</li><li>Underwritten by Centriq Life Insurance Company Limited (FSP 7370)</li><li>NOT a funeral policy and NOT a medical aid — a life cover and accidental injury cash benefit product</li><li>Sold primarily to government employees via PERSAL; also marketed via call centre and direct</li><li>IMPORTANT: This product excludes all pre-existing conditions from the death benefit — HIV/AIDS, diabetes, hypertension, epilepsy and cancer are specifically listed as exclusions if pre-existing</li></ul></td></tr>
+      <tr><td>Life Cover (Death Cash Benefit)</td><td><ul><li>R20 000 for main member and spouse on death from any non-excluded cause</li><li>Children (up to 5): R2 000 (under 1 year) / R4 000 (1–5 years) / R6 000 (6–13 years) / R8 000 (14–21 years)</li><li>Additional dependants (up to 3): R20 000 each — must be financially dependent family members</li><li>Premium: R163/month for main member and spouse; R38/month for children (up to 5); R32/month per additional dependant</li></ul></td></tr>
+      <tr><td>Accidental Injury Cash Benefit</td><td><ul><li>R2 000 per day for each full day (24 hours) spent in hospital due to accidental injury</li><li>Maximum: R200 000 per insured event per person (up to 100 days)</li><li>No waiting period — immediate from first premium</li><li>NOT payable for casualty/outpatient treatment, soft tissue injuries, planned procedures or physiotherapy</li></ul></td></tr>
+      <tr><td>Payments Back on Death (Premiums Refund)</td><td><ul><li>On death of the MAIN MEMBER ONLY: all premiums collected from inception to last premium before death paid back to spouse or estate</li><li>No interest paid on returned premiums</li><li>NOT applicable if another insured person (spouse/child) dies — main member only</li><li>Requires a valid death benefit claim to be approved first</li></ul></td></tr>
+      <tr><td>Emergency Medical Assistance (via CIMS)</td><td><ul><li>24-hour medical advice and information hotline (telephonic only — not clinical treatment)</li><li>Emergency medical response: road or air transport to nearest appropriate hospital</li><li>Inter-hospital transfer if current facility cannot provide required treatment</li><li>Escorted return of minors: children transported into care of chosen person from scene of medical emergency</li><li>Call 0861 990 000 to activate — must contact EMS call centre BEFORE using benefits</li></ul></td></tr>
+      <tr><td>Waiting Periods</td><td><ul><li>Accidental death and Accidental Injury Cash Benefit: no waiting period from first premium</li><li>Natural death: 12 consecutive premiums required before claim can be paid (12-month wait)</li><li>If policy lapses and restarts: waiting period restarts from scratch — cumulative 12 payments required</li><li>Pre-existing conditions: PERMANENTLY excluded — no waiting period can cure this exclusion</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>The pre-existing conditions exclusion is this product's single biggest vulnerability. ANY client with hypertension, diabetes, HIV, cancer or epilepsy who dies from a related cause will have their claim REJECTED. Sky's AIO and ILC do not require health questionnaires — this exclusion does not apply in the same way. Ask: 'Do you have any chronic conditions?'</li><li>The R20 000 life cover is very low. Sky's ILC pays up to R2 000 000 — no medicals, no blood tests, no waiting period. The gap in protection is enormous. Calculate the income replacement need for the client's specific salary.</li><li>The Unlimited's 12-month natural death waiting period is the longest in the market. Sky's AIO waives the waiting period for clients who have already served 6 months with another insurer for 31+ days. For a client switching from The Unlimited after 12 months, Sky's wait is already covered.</li><li>At R163/month for two lives, The Unlimited is affordable — but R20 000 cover per life is barely enough for a funeral. Sky's AIO at comparable premiums delivers R10 000–R90 000 funeral cover PLUS double accident cover PLUS up to R500 000 life cover PLUS Cash Back after 15 years.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+<!-- S20: MHA -->
+<div id="s20">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">20</div><h2>MHA / Assupol Xtra Cover — <span>NEHAWU (Assupol Prosperity)</span></h2></div></div>
+  <div class="content-alt"><div class="page">
+    <div class="info-box"><div class="info-title">Important — NEHAWU / Assupol Prosperity Link</div>This product appears on clients' PERSAL payslips as 'ASSUPOL PROSPERITY' or 'MHA'. It is administered by MHA Management Holdings (Pty) Ltd (FSP 10134) and underwritten by Assupol Life Limited (FSP 53). It is a funeral benefit product sold to NEHAWU members (National Education, Health and Allied Workers Union). Because it appears under Assupol's name on PERSAL, advisors may encounter clients who believe they have an 'Assupol' policy when they actually have this union-linked group product, not a standard Assupol individual policy.</div>
+    <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Detail</th></tr></thead><tbody>
+      <tr><td>Product Name</td><td><ul><li>Xtra Cover Benefit for Immediate Dependants — The Family Funeral Xtra Cover Plan</li><li>Designed for NEHAWU members as a supplementary funeral benefit on top of their main group scheme cover</li><li>Underwritten by Assupol Life Limited; administered and distributed by MHA Management Holdings</li><li>Appears on PERSAL deductions as 'Assupol Prosperity' or 'MHA'</li></ul></td></tr>
+      <tr><td>Cover</td><td><ul><li>Main member: R7 500 natural death / R15 000 accidental death</li><li>Spouse: R7 500 natural death / R15 000 accidental death</li><li>Children (up to 6): covered to age 21; full-time students to age 25; stillborn from 26 weeks</li><li>Extended family: parents, parents-in-law, grandparents, great-grandparents, aunts, uncles, siblings and their children, adult children over 21, ex-spouse — up to age 85/86 next birthday</li><li>Maximum benefit caps per Assupol rules: under 6 years R10 000; 6–14 years R30 000; 14–65 years R75 000 main/spouse; other dependants R60 000; over 65 R25 000; accidental death capped at R150 000 total</li></ul></td></tr>
+      <tr><td>Premium</td><td><ul><li>R60 per month for the Xtra Cover option covering main member and spouse</li><li>Collected via PERSAL payroll deduction — no bank debit order</li></ul></td></tr>
+      <tr><td>Key Benefits (MHA On-Hand Services)</td><td><ul><li>Repatriation: transport of deceased to place of funeral if more than 100km from place of death — service only, not cash</li><li>Legal Assistance Helpline: telephonic legal guidance on all areas of law; access to standard legal documents (wills, lease agreements, HP contracts)</li><li>Telephonic Medical Advice Line: 24-hour medical information and advice (not clinical treatment)</li><li>Tombstone Discount: up to 10% discount on tombstones through participating partners, capped at R4 000</li><li>Airtime: R300 airtime allocated to beneficiary immediately on death of any insured life on the policy</li><li>Premium Waiver (on death): 6 months free cover for remaining family after policyholder dies</li><li>Accidental Death Benefit: double the funeral benefit amount on accidental death</li></ul></td></tr>
+      <tr><td>Waiting Periods</td><td><ul><li>Immediate Dependants (main member, spouse, children): 4 months natural death (4 consecutive premiums required)</li><li>Extended family: 6 months natural death (6 consecutive premiums required)</li><li>Accidental death: no waiting period — immediate from first premium</li><li>Suicide: 12 months</li><li>Benefits for increased cover: new waiting period applies to the increased portion only</li></ul></td></tr>
+      <tr><td>Policy Rules</td><td><ul><li>One Immediate Dependant policy per policyholder only</li><li>Premiums increase 10% annually; benefits increase 4% annually</li><li>31-day grace period on premium payment; lapse after grace period; reinstatement within 2 months with no new waiting period</li><li>Policy reinstated after 2+ months treated as new policy — full waiting periods restart</li><li>Claims must be submitted within 6 months of date of death</li></ul></td></tr>
+      <tr class="angle-row"><td><span class="angle-label">⚠ Advisor Angle</span></td><td><ul><li>Clients will say 'I have Assupol' but the payslip deduction labelled 'Assupol Prosperity' or 'MHA' is this NEHAWU group product — not a standard individual Assupol policy. Always ask to see the payslip deduction. Distinguish the products before any replacement conversation.</li><li>At R60/month, R7 500 natural death cover is a top-up benefit, not a comprehensive funeral plan. Sky's AIO Plan 1 delivers R10 000 funeral cover from R22/month (age 18–25) — already more cover at a lower or comparable premium. Build the gap case clearly.</li><li>Sky's AIO double accident cover pays double on ANY unnatural death for ALL lives assured. This product pays double the funeral benefit (R15 000) on accidental death — Sky's double accident benefit on a R50 000 AIO plan pays R100 000. That is the comparison the client needs to see.</li><li>PERSAL deduction means high stickiness. Do not try to cancel this policy — it is a union group product and often non-negotiable. Position Sky's AIO as the supplementary policy on top of this, filling the gap from R7 500 up to whatever the needs analysis reveals.</li></ul></td></tr>
+    </tbody></table></div>
+  </div></div>
+</div>
+
+
+<!-- QUICK REFERENCE -->
+<div id="qr">
+  <div class="section-header"><div class="section-header-inner"><div class="section-number">QR</div><h2>Quick Reference — <span>Replacement Conversation Guide</span></h2></div></div>
+  <div class="content"><div class="page">
+    <p style="color:var(--muted);margin-bottom:20px;">Use these talking points when sitting with a client who holds a competitor policy.</p>
+    <div class="table-wrap"><table class="qr-table">
+      <thead><tr><th>If the client has...</th><th>Ask this...</th><th>Position Sky like this...</th></tr></thead>
+      <tbody>
+        <tr><td>Metropolitan Funeral Plan</td><td>Do you know your CashBack % and when it pays? Have you ever claimed — did you do it alone on WhatsApp?</td><td>Sky's adviser is your 24/7 support — not an app. Compare total ongoing value.</td></tr>
+        <tr><td>OM Care Plan</td><td>Did you know there's no grocery or education benefit? Are you aware cover is capped at R30 000?</td><td>Client is underinsured on cheapest tier. Sky likely offers more at same or lower premium.</td></tr>
+        <tr><td>OM Standard/Comprehensive+</td><td>Are you paying extra for grocery and education add-ons? Do you know your total premium breakdown?</td><td>Show what Sky includes standard vs OM's optional extras.</td></tr>
+        <tr><td>Old Mutual Greenlight</td><td>Can you explain your disability cover to me right now? Do you know what severe illnesses you are covered for?</td><td>Run a full needs analysis; find the gaps. This is you vs their current adviser — make the case.</td></tr>
+        <tr><td>1Life (any product)</td><td>Who do you call when you need to change your cover? When last did someone review your policy?</td><td>No-adviser gap is Sky's biggest opportunity. Offer a free needs analysis as the entry point.</td></tr>
+        <tr><td>Clientele Life</td><td>Did you understand the 'premiums paid back' benefit fully? Who sold you this — can you still call them?</td><td>Call-centre sold — relationship ends at the sale. Sky adviser = long-term financial partner.</td></tr>
+        <tr><td>AVBOB</td><td>Do you know the R23 500 only applies if AVBOB does the funeral? What if your family wants their own undertaker?</td><td>Sky pays cash — the client decides how to spend it. No lock-in to any funeral service provider.</td></tr>
+        <tr><td>Assupol</td><td>Did you know Assupol is now part of the Sanlam Group? Are you aware of the optional benefits you have?</td><td>Sanlam family — position Sky as the premium adviser-led option. Do a full review to confirm no gaps.</td></tr>
+        <tr><td>Liberty Funeral Plus</td><td>Are you using the Inkomo or Tombstone benefit? Do you know about the Paid-Up benefit at age 65?</td><td>Liberty has 32-person cover — check if client needs this. Focus on Sky's simplicity and adviser support.</td></tr>
+        <tr><td>Hollard</td><td>Do you know which brand originally underwrites your policy? Have you used the Vehicle Access or legal benefit?</td><td>Many clients do not know Hollard underwrites their policy. A full review will reveal gaps and Sky's value.</td></tr>
+        <tr><td>Assupol Progress 4Sure / 4Life</td><td>Do you know your natural death cover phases in over 18 months on the 4Sure plan? Have you ever claimed and reset your Loyalty Reward clock?</td><td>4Sure phased cover is a gap — Sky's ILC is immediate. Sanlam now owns Assupol — position Sky as the premium option.</td></tr>
+        <tr><td>Emerald Life</td><td>Do you know your double accidental death benefit only applies if your cover is R15 000 or less? Are you aware Clientele now owns Emerald Life?</td><td>Cover limits are very low — client is underinsured. Sky's Value Funeral Plan offers better protection at comparable cost.</td></tr>
+        <tr><td>FNB Funeral / Life</td><td>Do you use FNB banking? Do you earn eBucks rewards on this policy? Have you used the Will or the executor fee benefit?</td><td>Bank-sold — no ongoing financial advice, no needs analysis. Sky adviser is the holistic planner FNB cannot replace.</td></tr>
+        <tr><td>Absa Funeral / Life</td><td>Do you know you may already have R15 000 free cover embedded in your Flexi Account? Are your optional benefits (grocery, unveiling) active?</td><td>Embedded R15 000 is never enough — build the gap case. Credit Protection protects Absa's loans, not your family.</td></tr>
+        <tr><td>Sanlam Life (Matrix/Premier)</td><td>Which Sanlam product do you have exactly — is it Sanlam Sky or Sanlam Life? Are you on debit order? Do you know your Sanlam Reality tier and the discount you receive?</td><td>Clarify the brand first — Sky and Sanlam Life are different products. Wealth Bonus is not guaranteed and Cashback costs 35% extra — ensure the client understands what they're paying for.</td></tr>
+        <tr><td>King Price Life</td><td>Do you know King Price Life was originally Stangen — a car insurer that bought into life insurance? Have you compared the salary protection cap to your actual salary?</td><td>King Price is a short-term brand that added life — Sanlam Sky is a specialist life and funeral house. No waiting period sounds great but know Sky's position before the conversation.</td></tr>
+        <tr><td>Workerslife (POPCRU 25)</td><td>Do you know your 120-month premium waiver is based on age 70 — if you are older, the waiver period is shorter? Have you ever had to use the vehicle hire or repatriation benefit and claimed within the 6-month window?</td><td>Strong PERSAL stickiness but cover amounts are union-standardised — no individual needs analysis was done. The 1-month natural death waiting period is shorter than most but cover limits vary by plan — confirm the actual rand amount.</td></tr>
+        <tr><td>The Unlimited</td><td>Do you know your life cover is R20 000 only — is that enough to bury you and support your family? Did you know that if you had hypertension, diabetes or HIV before you joined, a death from those conditions will not be paid?</td><td>12-month natural death waiting period is the longest in the market. Pre-existing condition exclusion is PERMANENT — it never falls away, even after years of paying premiums.</td></tr>
+        <tr><td>MHA / Assupol Xtra Cover (Assupol Prosperity on PERSAL)</td><td>Do you know the cover on this policy is only R7 500 for natural death — is that enough for a funeral? Did you know this is a union product administered by MHA, not a direct Assupol policy?</td><td>R7 500 is supplementary cover, not a standalone funeral plan — the client almost certainly needs more. Appearing as 'Assupol' on the payslip causes confusion — clarify the difference before positioning Sky.</td></tr>
+        <tr><td>Capitec Funeral / Life</td><td>When last did someone review if your cover amount is still sufficient? Do you understand the Minor Beneficiary Trust option on your life cover?</td><td>No adviser — no review, no relationship. Sky's value is the personal service Capitec cannot provide at R25/month.</td></tr>
+        <tr><td>Hollard Specialist Life</td><td>Do you know your premium is guaranteed for 10 years? Have you ever used the 30% HIV-test bonus on your cover?</td><td>Broker-sold — focus on adviser relationship vs their broker. Run a needs analysis; Disability Plus is often not understood by the client.</td></tr>
+        <tr><td>Old Mutual Protect</td><td>Does your disability cover pay if you can't do YOUR specific job, or any job? Do you know what the Lifestyle Enhancer doubles your payout for?</td><td>Most clients can't answer — this is a gap in understanding, not a gap in cover. Know your Sky equivalent for every Protect benefit before sitting down.</td></tr>
+        <tr><td>Discovery (any product)</td><td>What is your current Vitality status? Are you fully integrated with Discovery Bank and Medical Aid?</td><td>Most clients are not fully integrated — they get far less PayBack than they think. Sky's simplicity and clarity wins here.</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="callout" style="margin-top:40px;text-align:center;">
+      <div class="callout-title">Remember</div>
+      <p style="font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--navy);margin:0;">The biggest competitive advantage we will always have is <strong>YOU</strong> — the adviser.</p>
+      <p style="color:var(--muted);font-size:0.92rem;margin-top:8px;margin-bottom:0;">No call centre, app or online platform can replace a trusted adviser who knows their client's full financial picture and is there when it matters most.</p>
+    </div>
+  </div></div>
+</div>
+
+<footer>
+  <strong>Team Buffalos</strong> · Sanlam Sky Advisor Training · Competitor Intelligence Training Sheet<br>
+  Confidential — Internal Use Only · 2025
+</footer>
+
+<!-- GLOSSARY -->
+<div id="glossary">
+  <div class="section-header">
+    <div class="section-header-inner">
+      <div class="section-number">GL</div>
+      <h2>Glossary — <span>Key Terms Explained</span></h2>
+    </div>
+  </div>
+  <div class="content">
+    <div class="page">
+      <p style="color:var(--muted);margin-bottom:28px;font-size:0.92rem;">A reference guide to the industry terms, product names and abbreviations used throughout this training sheet.</p>
+
+      <h3>Products &amp; Plans</h3>
+      <dl>
+        <div class="glossary-term"><dt>AIO — All-In-One Plan</dt><dd>Sanlam Sky's flagship combined product. Includes funeral cover (Plans 1–9, R10 000–R90 000), up to R500 000 non-underwritten life cover for the main member and spouse, double accident cover on all lives, Cash Back after 15 years, no-more-premiums benefit, and burial repatriation. No medicals or blood tests required.</dd></div>
+        <div class="glossary-term"><dt>ILC — Immediate Life Cover</dt><dd>Sanlam Sky's standalone life cover product. Pays up to R2 000 000 on death or permanent physical impairment. No waiting period, no medicals, no blood tests, no occupational exclusions. Cover starts the day after approval. Available for ages 18–60. Underwritten by Sanlam Developing Markets (FSP 11230).</dd></div>
+        <div class="glossary-term"><dt>Value Funeral Plan</dt><dd>Sanlam Sky's entry-level funeral plan. Suited for older lives or clients needing basic cover at lower premiums.</dd></div>
+        <div class="glossary-term"><dt>Enhanced Priority Funeral Plan</dt><dd>Sanlam Sky's funeral plan designed for higher-risk extended family cover situations.</dd></div>
+        <div class="glossary-term"><dt>Essential Med</dt><dd>Sanlam Sky's medical insurance product. NOT a medical aid — provides private medical cover access for clients who do not have medical aid. Subject to its own product rules and waiting periods.</dd></div>
+        <div class="glossary-term"><dt>Greenlight</dt><dd>Old Mutual's comprehensive adviser-sold risk platform covering life, disability, severe illness and income protection. One of the most commonly encountered competitor products in the field.</dd></div>
+        <div class="glossary-term"><dt>OM Protect</dt><dd>Old Mutual's modular risk platform for the mass-affluent market. Similar to Greenlight but with more build-your-own flexibility. Adviser-sold only.</dd></div>
+        <div class="glossary-term"><dt>Vitality</dt><dd>Discovery's health and wellness rewards programme. Clients earn status (Bronze, Silver, Gold, Diamond) through healthy behaviour, which drives premium discounts of up to 48% on Discovery Life.</dd></div>
+        <div class="glossary-term"><dt>POPCRU 25</dt><dd>Workerslife's funeral benefit policy designed specifically for POPCRU union members (South African Police Service, Correctional Services, and Courts personnel).</dd></div>
+        <div class="glossary-term"><dt>Assupol Prosperity / MHA</dt><dd>A NEHAWU union group funeral product administered by MHA Management Holdings and underwritten by Assupol Life. Appears on PERSAL payslips as 'Assupol Prosperity' or 'MHA' — often confused with a standard individual Assupol policy.</dd></div>
+        <div class="glossary-term"><dt>The Unlimited</dt><dd>A life cover and accidental injury cash benefit product sold primarily to government employees via PERSAL. NOT a funeral plan. Notably excludes pre-existing conditions permanently — including HIV, diabetes, hypertension, epilepsy and cancer.</dd></div>
+      </dl>
+
+      <div class="divider"></div>
+      <h3>Key Benefit Terms</h3>
+      <dl>
+        <div class="glossary-term"><dt>Cash Back / CashBack</dt><dd>A benefit that returns a percentage or all of premiums paid to the policyholder after a specified period. Sky's AIO returns 100% of ALL premiums after 15 years regardless of claims. Competitor cashback products typically return smaller percentages, require no claims, or reset on any claim.</dd></div>
+        <div class="glossary-term"><dt>Double Accident Cover</dt><dd>A benefit that pays double the insured amount if the cause of death is accidental (unnatural). On Sky's AIO, this applies to ALL lives assured on ALL plans with no waiting period. Some competitors restrict this to the main member and spouse, or only on higher-tier plans.</dd></div>
+        <div class="glossary-term"><dt>No More Premiums Benefit</dt><dd>A Sky AIO benefit that waives all future premiums if the main member dies or becomes permanently disabled. All remaining members on the policy continue to be covered at no cost until the main member would have turned 65.</dd></div>
+        <div class="glossary-term"><dt>Waiting Period</dt><dd>The time after a policy starts during which a natural death claim will not be paid. The standard industry waiting period is 6 months. Accidental death is typically covered immediately. Sky's AIO waives the waiting period entirely for clients who have already served it with another licensed insurer for 31 or more consecutive days.</dd></div>
+        <div class="glossary-term"><dt>Waiting Period Waiver / Switch Benefit</dt><dd>A feature offered by several insurers (including Sky, FNB, Absa, Capitec and Liberty) that removes the new waiting period when a client switches from another licensed insurer where the waiting period has already been served.</dd></div>
+        <div class="glossary-term"><dt>Premium Waiver</dt><dd>A benefit that waives premium payments for a period after the main member dies. Duration varies by product — from 6 months (MHA, King Price) to 24 months (1Life) to 10 years / 120 months (Workerslife). Sky's AIO no-more-premiums benefit covers ALL members until the main member would have turned 65, which is often longer.</dd></div>
+        <div class="glossary-term"><dt>Paid-Up Benefit</dt><dd>Allows a policyholder to stop paying premiums at age 65 while keeping cover in force for life. Offered by Liberty and Hollard as optional add-ons. Sky's AIO no-more-premiums benefit achieves a similar outcome but triggers earlier — on death or disability of the main member rather than at a fixed age.</dd></div>
+        <div class="glossary-term"><dt>Repatriation</dt><dd>The transport of a deceased person's remains to their place of burial. Sky's AIO covers repatriation from SA, Namibia, Zimbabwe, Botswana, Swaziland, Lesotho and Mozambique. Some competitors limit repatriation to within SA borders only.</dd></div>
+        <div class="glossary-term"><dt>Terminal Illness Benefit</dt><dd>Pays out a percentage (often 95–100%) of the death benefit in advance if the life assured is diagnosed with a terminal illness and has a life expectancy of 12 months or less. Available on many life cover products including ILC, Assupol Progress, Liberty Lifestyle Protector and King Price Life.</dd></div>
+        <div class="glossary-term"><dt>Survivorship Benefit</dt><dd>Covers remaining insured family members for a period (usually 6 months) at no cost after the main policyholder dies. Offered by Absa (5-year premium requirement) and Capitec. Sky's AIO no-more-premiums benefit covers all members until age 65 — significantly longer.</dd></div>
+        <div class="glossary-term"><dt>Inkomo Cash Benefit</dt><dd>A Liberty Funeral Plus optional benefit that pays R10 000 cash for traditional cattle and catering expenses at a funeral. Culturally significant for many clients.</dd></div>
+      </dl>
+
+      <div class="divider"></div>
+      <h3>Distribution &amp; Sales Terms</h3>
+      <dl>
+        <div class="glossary-term"><dt>Adviser-Sold</dt><dd>A product distributed exclusively through licensed financial advisers who conduct a needs analysis before sale. Examples include Greenlight, OM Protect, Discovery Life, Liberty Lifestyle Protector and Hollard Specialist Life. Adviser-sold products generally offer more comprehensive cover but require a relationship with an adviser.</dd></div>
+        <div class="glossary-term"><dt>Direct / Call Centre Sale</dt><dd>A product sold without an adviser — typically via telephone, TV advertising, WhatsApp or online. Examples include 1Life, Clientele, Absa, FNB and Capitec. No ongoing adviser relationship or policy review after the sale.</dd></div>
+        <div class="glossary-term"><dt>Tied Adviser</dt><dd>An adviser who sells only one insurer's products. Sky advisors and Emerald Life advisers are tied advisers. Distinct from independent brokers who can sell products from multiple insurers.</dd></div>
+        <div class="glossary-term"><dt>Broker-Only Product</dt><dd>A product available exclusively through licensed independent brokers — not available direct to the public or through tied advisers. Hollard Specialist Life is a broker-only product.</dd></div>
+        <div class="glossary-term"><dt>FNA — Financial Needs Analysis</dt><dd>A structured assessment of a client's financial situation, goals, dependants, existing cover and gaps. Required before advising on or replacing any risk product. Completing a proper FNA is a compliance requirement and your most powerful sales tool.</dd></div>
+        <div class="glossary-term"><dt>Replacement</dt><dd>Cancelling or lapsing an existing policy and replacing it with a new one. Replacement conversations require disclosure of the group relationship (e.g. Assupol is now Sanlam-owned), a proper FNA, and a clear product benefit comparison. Replacing a policy must always be in the client's best interest.</dd></div>
+        <div class="glossary-term"><dt>Binder Holder</dt><dd>A company that is authorised to enter into, vary or cancel insurance policies on behalf of an insurer. The Unlimited Group is a binder holder — Centriq Life is the actual underwriter.</dd></div>
+        <div class="glossary-term"><dt>Underwriter</dt><dd>The licensed insurer that accepts the risk and is legally responsible for paying claims. The underwriter may differ from the brand the client sees — e.g. Hollard underwrites many third-party branded funeral plans without clients knowing.</dd></div>
+      </dl>
+
+      <div class="divider"></div>
+      <h3>Payment &amp; Collection Terms</h3>
+      <dl>
+        <div class="glossary-term"><dt>PERSAL</dt><dd>Personnel and Salary System — the South African government's payroll system used to pay public sector employees. PERSAL deductions for insurance premiums are deducted directly from salary before the employee receives their pay, making them highly reliable with very low lapse risk.</dd></div>
+        <div class="glossary-term"><dt>Stop Order</dt><dd>A deduction instruction from a government employee's salary via PERSAL. Stop orders are the primary collection method for Sanlam Sky and most competitors in the government employee market.</dd></div>
+        <div class="glossary-term"><dt>Debit Order</dt><dd>An instruction to deduct a premium directly from a bank account on a set date each month. Used by bank-tied products (FNB, Absa, Capitec) and some direct products. Higher lapse risk than PERSAL stop orders.</dd></div>
+        <div class="glossary-term"><dt>ACB — Automated Clearing Bureau</dt><dd>The South African system that processes electronic debit and credit transactions between banks, including insurance premium debit orders.</dd></div>
+        <div class="glossary-term"><dt>SASSA</dt><dd>South African Social Security Agency — the government body that administers social grants (old age, disability, child support etc.). A significant market segment for microinsurance funeral products. Clientele's cluster (including 1Life and Emerald) collectively account for over 50% of all SASSA funeral deductions.</dd></div>
+        <div class="glossary-term"><dt>eBucks</dt><dd>FNB's rewards programme. Qualifying FNB Life and funeral products earn eBucks points. Non-FNB banking clients do not benefit from this reward.</dd></div>
+      </dl>
+
+      <div class="divider"></div>
+      <h3>Compliance &amp; Regulatory Terms</h3>
+      <dl>
+        <div class="glossary-term"><dt>FSP — Financial Services Provider</dt><dd>A company or individual licensed by the FSCA (Financial Sector Conduct Authority) to provide financial advice and intermediary services. All insurers and advisers must hold an FSP licence. FSP numbers are referenced throughout this sheet for key competitors.</dd></div>
+        <div class="glossary-term"><dt>FSCA — Financial Sector Conduct Authority</dt><dd>South Africa's regulator for non-banking financial services. The FSCA licenses FSPs, monitors market conduct, and enforces compliance with legislation including the FAIS Act and POPIA.</dd></div>
+        <div class="glossary-term"><dt>FAIS Act</dt><dd>Financial Advisory and Intermediary Services Act. Governs how financial advice may be given in South Africa. Requires advisers to conduct a needs analysis, disclose conflicts of interest, and act in the client's best interest.</dd></div>
+        <div class="glossary-term"><dt>TCF — Treating Customers Fairly</dt><dd>A regulatory outcome-based framework requiring all financial service providers to demonstrate that fair treatment of customers is central to their business. Six outcomes guide what fair treatment looks like — from clear communication to products that perform as expected.</dd></div>
+        <div class="glossary-term"><dt>POPIA — Protection of Personal Information Act</dt><dd>South Africa's data privacy legislation. Requires that all personal information collected from clients is handled lawfully, stored securely, used only for its intended purpose, and not shared without consent.</dd></div>
+        <div class="glossary-term"><dt>Microinsurer</dt><dd>A licensed insurer that specialises in low-premium, low-benefit insurance products designed for lower-income market segments. Emerald Life is South Africa's first licensed life microinsurer.</dd></div>
+        <div class="glossary-term"><dt>Mutual Society</dt><dd>An insurer owned by its policyholders rather than shareholders. Profits are returned to policyholders rather than distributed as dividends. AVBOB is a mutual society.</dd></div>
+        <div class="glossary-term"><dt>Pre-Existing Condition</dt><dd>A medical condition that existed before a policy was taken out. Some products (notably The Unlimited) permanently exclude death claims resulting from pre-existing conditions including HIV, diabetes, hypertension, epilepsy and cancer. Sky's AIO and ILC do not require health questionnaires, so this exclusion does not apply in the same way.</dd></div>
+      </dl>
+
+    </div>
+  </div>
+</div>
+
+
+  // Sticky nav active state on scroll
+  (function() {
+    var sections = ['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10',
+                    's11','s12','s13','s14','s15','s16','s17','s18','s19','s20','qr'];
+    var navLinks = {};
+    sections.forEach(function(id) {
+      var a = document.querySelector('.sticky-nav a[href="#' + id + '"]');
+      if (a) navLinks[id] = a;
+    });
+
+    function onScroll() {
+      var scrollY = window.scrollY + 80;
+      var current = sections[0];
+      sections.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollY) current = id;
+      });
+      Object.keys(navLinks).forEach(function(id) {
+        navLinks[id].classList.toggle('active', id === current);
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+</body>
+</html>
